@@ -18,10 +18,6 @@ project ( acf-ref )
 include_directories ( ${CMAKE_SOURCE_DIR}/include )
 
 #
-# aggregate all project source files into a single variable
-set ( SOURCE_FILES ${CMAKE_SOURCE_DIR}/test/assertion/main.cpp )
-
-#
 # Setting language standard
 #
 
@@ -45,12 +41,9 @@ add_definitions ( -Wall ${CPP17_FLAG} )
 #
 
 #
-# assertion test
+# test's
 #
-
-#
-# create an executable binary
-add_executable ( acf-ref ${SOURCE_FILES} )
+add_subdirectory ( ${CMAKE_SOURCE_DIR}/test )
 
 #
 # documentation
