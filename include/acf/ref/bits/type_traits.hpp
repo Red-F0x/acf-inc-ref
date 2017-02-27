@@ -1,163 +1,203 @@
-/*
- * type_traits.hpp
- *
- *  Created on: 09.02.2017
- *      Author: ho11owman
- */
+///
+/// type_traits.hpp
+///
+/// Created on: 09.02.2017
+/// Author: ho11owman
+///
 
 #ifndef TYPE_TRAITS_HPP_
 #define TYPE_TRAITS_HPP_
 
 #include "acf/ref/bits/preprocessor.hpp"
 
-namespace acf {
+namespace acf
+{
 
-namespace ref {
+namespace ref
+{
 
 template <typename Type>
-    struct name;
+struct name;
 
 template <>
-    struct name<void>
-    {
-        static constexpr char value[] { "void" };
-        using type = decltype(value);
-    };
+struct name<void>
+{
+    static constexpr char value[] { "void" };
+    using type = decltype(value);
+};
 
 constexpr char name<void>::value[];
 
 template <>
-    struct name<decltype(nullptr)>
-    {
-        static constexpr char value[] = { "nullptr" };
-        using type = decltype(value);
-    };
+struct name<decltype(nullptr)>
+{
+    static constexpr char value[] = { "nullptr" };
+    using type = decltype(value);
+};
+
+constexpr char name<decltype(nullptr)>::value[];
 
 template <>
-    struct name<bool>
-    {
-        static constexpr char value[] = { "bool" };
-        using type = decltype(value);
-    };
+struct name<bool>
+{
+    static constexpr char value[] = { "bool" };
+    using type = decltype(value);
+};
+
+constexpr char name<bool>::value[];
 
 template <>
-    struct name<signed char>
-    {
-        static constexpr char value[] = { "signed char" };
-        using type = decltype(value);
-    };
+struct name<signed char>
+{
+    static constexpr char value[] = { "signed char" };
+    using type = decltype(value);
+};
+
+constexpr char name<signed char>::value[];
 
 template <>
-    struct name<unsigned char>
-    {
-        static constexpr char value[] = { "unsigned char" };
-        using type = decltype(value);
-    };
+struct name<unsigned char>
+{
+    static constexpr char value[] = { "unsigned char" };
+    using type = decltype(value);
+};
+
+constexpr char name<unsigned char>::value[];
 
 template <>
-    struct name<char>
-    {
-        static constexpr char value[] = { "char" };
-        using type = decltype(value);
-    };
+struct name<char>
+{
+    static constexpr char value[] = { "char" };
+    using type = decltype(value);
+};
+
+constexpr char name<char>::value[];
 
 template <>
-    struct name<wchar_t>
-    {
-        static constexpr char value[] = { "wchar_t" };
-        using type = decltype(value);
-    };
+struct name<wchar_t>
+{
+    static constexpr char value[] = { "wchar_t" };
+    using type = decltype(value);
+};
+
+constexpr char name<wchar_t>::value[];
 
 template <>
-    struct name<char16_t>
-    {
-        static constexpr char value[] = { "char16_t" };
-        using type = decltype(value);
-    };
+struct name<char16_t>
+{
+    static constexpr char value[] = { "char16_t" };
+    using type = decltype(value);
+};
+
+constexpr char name<char16_t>::value[];
 
 template <>
-    struct name<char32_t>
-    {
-        static constexpr char value[] = { "char32_t" };
-        using type = decltype(value);
-    };
+struct name<char32_t>
+{
+    static constexpr char value[] = { "char32_t" };
+    using type = decltype(value);
+};
+
+constexpr char name<char32_t>::value[];
 
 template <>
-    struct name<short int>
-    {
-        static constexpr char value[] = { "short int" };
-        using type = decltype(value);
-    };
+struct name<short int>
+{
+    static constexpr char value[] = { "short int" };
+    using type = decltype(value);
+};
+
+constexpr char name<short int>::value[];
 
 template <>
-    struct name<unsigned short int>
-    {
-        static constexpr char value[] = { "unsigned short int" };
-        using type = decltype(value);
-    };
+struct name<unsigned short int>
+{
+    static constexpr char value[] = { "unsigned short int" };
+    using type = decltype(value);
+};
+
+constexpr char name<unsigned short int>::value[];
 
 template <>
-    struct name<int>
-    {
-        static constexpr char value[] = { "int" };
-        using type = decltype(value);
-    };
+struct name<int>
+{
+    static constexpr char value[] = { "int" };
+    using type = decltype(value);
+};
+
+constexpr char name<int>::value[];
 
 template <>
-    struct name<unsigned int>
-    {
-        static constexpr char value[] = { "unsigned int" };
-        using type = decltype(value);
-    };
+struct name<unsigned int>
+{
+    static constexpr char value[] = { "unsigned int" };
+    using type = decltype(value);
+};
+
+constexpr char name<unsigned int>::value[];
 
 template <>
-    struct name<long int>
-    {
-        static constexpr char value[] = { "long int" };
-        using type = decltype(value);
-    };
+struct name<long int>
+{
+    static constexpr char value[] = { "long int" };
+    using type = decltype(value);
+};
+
+constexpr char name<long int>::value[];
 
 template <>
-    struct name<unsigned long int>
-    {
-        static constexpr char value[] = { "unsigned long int" };
-        using type = decltype(value);
-    };
+struct name<unsigned long int>
+{
+    static constexpr char value[] = { "unsigned long int" };
+    using type = decltype(value);
+};
+
+constexpr char name<unsigned long int>::value[];
 
 template <>
-    struct name<long long int>
-    {
-        static constexpr char value[] = { "long long int" };
-        using type = decltype(value);
-    };
+struct name<long long int>
+{
+    static constexpr char value[] = { "long long int" };
+    using type = decltype(value);
+};
+
+constexpr char name<long long int>::value[];
 
 template <>
-    struct name<unsigned long long int>
-    {
-        static constexpr char value[] = { "unsigned long long int" };
-        using type = decltype(value);
-    };
+struct name<unsigned long long int>
+{
+    static constexpr char value[] = { "unsigned long long int" };
+    using type = decltype(value);
+};
+
+constexpr char name<unsigned long long int>::value[];
 
 template <>
-    struct name<float>
-    {
-        static constexpr char value[] = { "float" };
-        using type = decltype(value);
-    };
+struct name<float>
+{
+    static constexpr char value[] = { "float" };
+    using type = decltype(value);
+};
+
+constexpr char name<float>::value[];
 
 template <>
-    struct name<double>
-    {
-        static constexpr char value[] = { "double" };
-        using type = decltype(value);
-    };
+struct name<double>
+{
+    static constexpr char value[] = { "double" };
+    using type = decltype(value);
+};
+
+constexpr char name<double>::value[];
 
 template <>
-    struct name<long double>
-    {
-        static constexpr char value[] = { "long double" };
-        using type = decltype(value);
-    };
+struct name<long double>
+{
+    static constexpr char value[] = { "long double" };
+    using type = decltype(value);
+};
+
+constexpr char name<long double>::value[];
 
 }  // namespace ref
 

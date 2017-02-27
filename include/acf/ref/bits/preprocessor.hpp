@@ -17,11 +17,13 @@ namespace acf {                                     \
 namespace ref {                                     \
                                                     \
 template <>                                         \
-    struct name<Type>                               \
-    {                                               \
-        static constexpr char value[] = #Type;      \
-        using type = decltype(value);               \
-    };                                              \
+struct name<Type>                                   \
+{                                                   \
+    static constexpr char value[] = #Type;          \
+    using type = decltype(value);                   \
+};                                                  \
+                                                    \
+constexpr char name<Type>::value[];                 \
                                                     \
 }                                                   \
                                                     \
@@ -40,20 +42,22 @@ struct index<Type, tt_index> :                      \
                                                     \
 }
 
-#define ACF_REF_MEM_NAME(Type, tt_index, tt_name)   \
-namespace acf {                                     \
-                                                    \
-namespace ref {                                     \
-                                                    \
-template <>                                         \
-    struct name<acf::ref::index<Type, tt_index>>    \
-    {                                               \
-        static constexpr char value[] = #tt_name;   \
-        using type = decltype(value);               \
-    };                                              \
-                                                    \
-}                                                   \
-                                                    \
+#define ACF_REF_MEM_NAME(Type, tt_index, tt_name)                \
+namespace acf {                                                  \
+                                                                 \
+namespace ref {                                                  \
+                                                                 \
+template <>                                                      \
+struct name<acf::ref::index<Type, tt_index>>                     \
+{                                                                \
+    static constexpr char value[] = #tt_name;                    \
+    using type = decltype(value);                                \
+};                                                               \
+                                                                 \
+constexpr char name<acf::ref::index<Type, tt_index>>::value[];   \
+                                                                 \
+}                                                                \
+                                                                 \
 }
 
 #endif /* PREPROCESSOR_HPP_ */

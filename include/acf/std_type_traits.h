@@ -23,6 +23,16 @@ namespace acf {
 template <typename Type>
 struct is_incomplete;
 
+///
+/// The Type is depended from Dependency if:
+/// - the Type has member from type Dependency* (pointer)
+///
+/// first step construct Dependency
+/// second step construct Type
+///
+template <typename Type, typename... Dependency>
+struct dependet_construct;
+
 }  // namespace acf
 
 #endif /* STD_TYPE_TRAITS_H_ */

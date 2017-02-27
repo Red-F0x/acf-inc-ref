@@ -7,14 +7,4 @@
 
 #include "Beans.h"
 
-Beans::Beans ()
-{
-    // TODO Auto-generated constructor stub
-
-}
-
-Beans::~Beans ()
-{
-    // TODO Auto-generated destructor stub
-}
 
