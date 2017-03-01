@@ -1,5 +1,5 @@
 ///
-/// bean_traits.h
+/// \file include/acf/ref/bean_traits.h
 ///
 ///  Created on: 09.02.2017
 ///      Author: ho11owman
@@ -49,7 +49,7 @@ constexpr bool is_indexed_impl()
     return is_indexed_impl_0<Type, tt_index>();
 }
 
-}
+} // anonym
 
 template <typename Type, std::size_t tt_index = 0>
 struct is_indexed: public std::bool_constant<is_indexed_impl<Type, tt_index>()>
@@ -91,27 +91,126 @@ constexpr bool is_bean_v = acf::ref::is_bean<Type>::value;
 ///
 ///
 ///
-
-//template< class F, class... ArgTypes>
-//std::result_of_t<F&&(ArgTypes&&...)> invoke(F&& f, ArgTypes&&... args);
-//
-//template <typename F, typename... ArgTypes>
-
-enum class assecc_type
+namespace
 {
-    read
+
+template <typename Index, typename Type, Type tt_value>
+struct read_asseccor_impl
+{
+    using index_type = Index;
+    using value_type = Type;
+
+    static constexpr value_type value = tt_value;
 };
 
-template <typename Index, assecc_type tt_assecc_type, typename Type, Type tt_value>
-struct member_assecc;
+} // anonym
 
-//template <typename Index>
-//struct member_assecc<Index, assecc_type::read>
+template <typename Index>
+struct read_asseccor;
+
+namespace
+{
+
+template <typename Index, typename Type, Type tt_value>
+struct write_asseccor_impl
+{
+    using index_type = Index;
+    using value_type = Type;
+
+    static constexpr value_type value = tt_value;
+};
+
+} // anonym
+
+template <typename Index>
+struct write_asseccor;
+
+namespace
+{
+
+template <typename Type>
+struct assecc_result_impl;
+
+template <typename ResType, typename Class>
+struct assecc_result_impl<ResType Class::*>
+{
+    using type = ResType;
+};
+
+} // anonym
+
+template <typename Asseccor>
+struct assecc_result : public assecc_result_impl<typename Asseccor::value_type>
+{
+};
+
+template <typename Asseccor>
+using assecc_result_t = typename assecc_result<Asseccor>::type;
+
+namespace
+{
+
+template <typename Type>
+struct assecc_argument_impl;
+
+template <typename ResType, typename Class, typename Arg>
+struct assecc_argument_impl<ResType (Class::*)(Arg)>
+{
+    using type = Arg;
+};
+
+//template <typename ResType, typename Class, typename... Args>
+//struct assecc_argument_impl<ResType (Class::*)(Args...)>
 //{
-//
+//    using type = std::tuple<Args...>;
 //};
 
-}// namespace ref
+} // anonym
+
+template <typename Asseccor>
+struct assecc_argument : public assecc_argument_impl<typename Asseccor::value_type>
+{
+};
+
+template <typename Asseccor>
+using assecc_argument_t = typename assecc_argument<Asseccor>::type;
+
+///
+///
+///
+namespace
+{
+
+template <typename Asseccor, typename... Args>
+constexpr auto invoke_impl(Args&&... t_args)
+    -> std::enable_if_t<(std::is_void_v<assecc_result_t<Asseccor>>), assecc_result_t<Asseccor>>
+{
+    std::invoke(std::forward<typename Asseccor::value_type>(Asseccor::value), std::forward<Args>(t_args)...);
+}
+
+template <typename Asseccor, typename... Args>
+constexpr auto invoke_impl(Args&&... t_args)
+    -> std::enable_if_t<!(std::is_void_v<assecc_result_t<Asseccor>>), assecc_result_t<Asseccor>>
+{
+    return std::invoke(std::forward<typename Asseccor::value_type>(Asseccor::value), std::forward<Args>(t_args)...);
+}
+
+} // anonym
+
+template <typename Index, typename Bean>
+constexpr auto invoke_read(Bean&& t_bean)
+    -> decltype(invoke_impl<read_asseccor<Index>>(std::forward<Bean>(t_bean)))
+{
+    return invoke_impl<read_asseccor<Index>>(std::forward<Bean>(t_bean));
+}
+
+template <typename Index, typename Bean, typename Arg = assecc_argument_t<write_asseccor<Index>>>
+constexpr void invoke_write(Bean&& t_bean, Arg&& t_arg)
+{
+    invoke_impl<write_asseccor<Index>>(std::forward<Bean>(t_bean), std::forward<Arg>(t_arg));
+}
+
+} // namespace ref
 
 }  // namespace acf
 
