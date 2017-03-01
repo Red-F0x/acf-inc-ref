@@ -1,8 +1,10 @@
 ///
-/// type_traits.hpp
+/// \file include/acf/ref/bits/type_traits.hpp
 ///
 /// Created on: 09.02.2017
 /// Author: ho11owman
+///
+/// \brief prowide several template specializations for class name.
 ///
 
 #ifndef TYPE_TRAITS_HPP_
