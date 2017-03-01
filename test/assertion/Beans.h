@@ -37,7 +37,10 @@ namespace ref
 {
 
 template <>
-struct member_assecc<acf::ref::index<BasicBaseClass, 0>, acf::ref::assecc_type::read, decltype(&BasicBaseClass::bool_value), &BasicBaseClass::bool_value>;
+struct read_asseccor<acf::ref::index<BasicBaseClass, 0>> : 
+    public read_asseccor_impl<acf::ref::index<BasicBaseClass, 0>>, decltype(&BasicBaseClass::bool_value), &BasicBaseClass::bool_value>
+{
+};
 
 }
  // namespace ref
