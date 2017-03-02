@@ -223,8 +223,8 @@ constexpr void to_string_member(Bean&& t_bean)
     using id = acf::ref::index<Bean, tt_index>;
 
     std::cout << acf::ref::name_v<id>
-            << '[' << id::value << ']'
-            << ':' << '\n';
+            << '[' << id::value << ']';
+//            << ':' << acf::ref::invoke_read<id, Bean>(std::forward<Bean>(t_bean)) << '\n';
 }
 
 template <typename Bean, std::size_t... tt_indexes>
@@ -405,6 +405,16 @@ int main(int t_argc, char* t_argv[])
     std::cout << acf::ref::is_indexed_v<void> << '\n';
     std::cout << acf::ref::is_indexed_v<some_type> << '\n';
     std::cout << acf::ref::is_indexed_v<BasicBaseClass> << '\n';
+
+    using id = acf::ref::index<BasicBaseClass, 0>;
+    static_assert(std::experimental::is_same_v<acf::ref::read_asseccor<id>::index_type, id>);
+    static_assert(std::experimental::is_same_v<acf::ref::read_asseccor<id>::value_type, decltype(&BasicBaseClass::bool_value)>);
+    static_assert(acf::ref::read_asseccor<id>::value == &BasicBaseClass::bool_value);
+
+    using ra = acf::ref::read_asseccor<id>;
+
+    acf::ref::assecc_result_t<ra> test = "";
+    //static_assert(std::experimental::is_same_v<acf::ref::assecc_result_t<ra>, const bool>);
 
     to_string(BasicBaseClass {});
 }

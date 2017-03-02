@@ -8,6 +8,8 @@
 #ifndef BEAN_TRAITS_H_
 #define BEAN_TRAITS_H_
 
+#include <functional>
+
 #include "acf/ref/type_traits.h"
 
 namespace acf
@@ -91,7 +93,21 @@ constexpr bool is_bean_v = acf::ref::is_bean<Type>::value;
 ///
 ///
 ///
-namespace
+template <typename Type>
+struct class_of_impl;
+
+template <typename Res, typename Class>
+struct class_of_impl<Res Class::*>
+{
+    using type = Class;
+};
+
+template <typename Type>
+struct class_of : public class_of_impl<Type>
+{
+};
+
+namespace details
 {
 
 template <typename Index, typename Type, Type tt_value>
@@ -140,8 +156,9 @@ struct assecc_result_impl<ResType Class::*>
 } // anonym
 
 template <typename Asseccor>
-struct assecc_result : public assecc_result_impl<typename Asseccor::value_type>
+struct assecc_result// : public assecc_result_impl<typename Asseccor::value_type>
 {
+    using type = decltype(class_of_t<Asseccor::value>);
 };
 
 template <typename Asseccor>
@@ -183,14 +200,14 @@ namespace
 
 template <typename Asseccor, typename... Args>
 constexpr auto invoke_impl(Args&&... t_args)
-    -> std::enable_if_t<(std::is_void_v<assecc_result_t<Asseccor>>), assecc_result_t<Asseccor>>
+    -> std::enable_if_t<(std::experimental::is_void_v<assecc_result_t<Asseccor>>), assecc_result_t<Asseccor>>
 {
     std::invoke(std::forward<typename Asseccor::value_type>(Asseccor::value), std::forward<Args>(t_args)...);
 }
 
 template <typename Asseccor, typename... Args>
 constexpr auto invoke_impl(Args&&... t_args)
-    -> std::enable_if_t<!(std::is_void_v<assecc_result_t<Asseccor>>), assecc_result_t<Asseccor>>
+    -> std::enable_if_t<!(std::experimental::is_void_v<assecc_result_t<Asseccor>>), assecc_result_t<Asseccor>>
 {
     return std::invoke(std::forward<typename Asseccor::value_type>(Asseccor::value), std::forward<Args>(t_args)...);
 }
@@ -199,9 +216,9 @@ constexpr auto invoke_impl(Args&&... t_args)
 
 template <typename Index, typename Bean>
 constexpr auto invoke_read(Bean&& t_bean)
-    -> decltype(invoke_impl<read_asseccor<Index>>(std::forward<Bean>(t_bean)))
+    -> decltype(invoke_impl<read_asseccor<Index>, Bean>(std::forward<Bean>(t_bean)))
 {
-    return invoke_impl<read_asseccor<Index>>(std::forward<Bean>(t_bean));
+    return invoke_impl<read_asseccor<Index>, Bean>(std::forward<Bean>(t_bean));
 }
 
 template <typename Index, typename Bean, typename Arg = assecc_argument_t<write_asseccor<Index>>>
