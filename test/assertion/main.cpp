@@ -223,9 +223,11 @@ constexpr void to_string_member(Bean&& t_bean)
     using id = acf::ref::index<Bean, tt_index>;
 
     std::cout << acf::ref::name_v<id>
-            << '[' << id::value << ']';
-//            << ':' << acf::ref::invoke_read<id, Bean>(std::forward<Bean>(t_bean)) << '\n';
+            << '[' << id::value << ']'
+            << ':' << acf::ref::invoke_read<id>(std::forward<Bean>(t_bean)) << '\n';
 }
+
+/// \todo to_string_impl for bool type
 
 template <typename Bean, std::size_t... tt_indexes>
 constexpr void to_string_impl(Bean&& t_bean, std::index_sequence<tt_indexes...>)
@@ -413,7 +415,7 @@ int main(int t_argc, char* t_argv[])
 
     using ra = acf::ref::read_asseccor<id>;
 
-    acf::ref::assecc_result_t<ra> test = "";
+//    typename ra::member_type test = "";
     //static_assert(std::experimental::is_same_v<acf::ref::assecc_result_t<ra>, const bool>);
 
     to_string(BasicBaseClass {});

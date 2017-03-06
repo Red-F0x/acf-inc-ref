@@ -83,7 +83,7 @@ constexpr std::size_t size_v = acf::ref::size<Type>::value;
 
 template <typename Type>
 struct is_bean: public std::bool_constant<
-        (acf::ref::is_supported_v<Type> &&(acf::ref::size_v<Type> > 0))>
+        (acf::ref::is_supported_v < Type > &&(acf::ref::size_v<Type> > 0))>
 {
 };
 
@@ -103,26 +103,48 @@ struct class_of_impl<Res Class::*>
 };
 
 template <typename Type>
-struct class_of : public class_of_impl<Type>
+struct class_of: public class_of_impl<Type>
 {
 };
 
-namespace details
-{
+template <typename Type>
+using class_of_t = typename acf::ref::class_of<Type>::type;
 
 template <typename Index, typename Type, Type tt_value>
-struct read_asseccor_impl
+struct execute_asseccor
 {
     using index_type = Index;
     using value_type = Type;
 
     static constexpr value_type value = tt_value;
+
+    using class_type = acf::ref::class_of_t<Type>;
+    using result_type = decltype((std::declval<class_type>().*value)());
+};
+
+template <typename Index, typename Type, Type tt_value>
+constexpr typename execute_asseccor<Index, Type, tt_value>::value_type execute_asseccor<Index, Type, tt_value>::value;
+
+namespace details
+{
+
+template <typename Index, typename Type, Type tt_value>
+class read_asseccor_impl: public acf::ref::execute_asseccor<Index, Type,
+        tt_value>
+{
+    using base_type = acf::ref::execute_asseccor<Index, Type, tt_value>;
+
+public:
+    static_assert(!std::experimental::is_void_v<typename base_type::result_type>);
+
+    using member_type = acf::ref::class_of_t<Type>;
 };
 
 } // anonym
 
 template <typename Index>
 struct read_asseccor;
+// : public acf::ref::execute_asseccor
 
 namespace
 {
@@ -141,28 +163,16 @@ struct write_asseccor_impl
 template <typename Index>
 struct write_asseccor;
 
-namespace
-{
-
-template <typename Type>
-struct assecc_result_impl;
-
-template <typename ResType, typename Class>
-struct assecc_result_impl<ResType Class::*>
-{
-    using type = ResType;
-};
-
-} // anonym
-
-template <typename Asseccor>
-struct assecc_result// : public assecc_result_impl<typename Asseccor::value_type>
-{
-    using type = decltype(class_of_t<Asseccor::value>);
-};
-
-template <typename Asseccor>
-using assecc_result_t = typename assecc_result<Asseccor>::type;
+///
+/// \see read_asseccor
+///
+//template <typename Asseccor>
+//struct assecc_result : public assecc_result_impl<Asseccor>
+//{
+//};
+//
+//template <typename Asseccor>
+//using assecc_result_t = typename acf::ref::assecc_result<Asseccor>::type;
 
 namespace
 {
@@ -182,10 +192,11 @@ struct assecc_argument_impl<ResType (Class::*)(Arg)>
 //    using type = std::tuple<Args...>;
 //};
 
-} // anonym
+}// anonym
 
 template <typename Asseccor>
-struct assecc_argument : public assecc_argument_impl<typename Asseccor::value_type>
+struct assecc_argument: public assecc_argument_impl<
+        typename Asseccor::value_type>
 {
 };
 
@@ -198,37 +209,45 @@ using assecc_argument_t = typename assecc_argument<Asseccor>::type;
 namespace
 {
 
-template <typename Asseccor, typename... Args>
-constexpr auto invoke_impl(Args&&... t_args)
-    -> std::enable_if_t<(std::experimental::is_void_v<assecc_result_t<Asseccor>>), assecc_result_t<Asseccor>>
+template <typename Asseccor, typename Bean,
+        typename ... Args>
+constexpr auto invoke_impl(Bean&& t_bean, Args&&... t_args)// -> void
+    -> std::enable_if_t<(std::experimental::is_void_v<typename Asseccor::result_type>), typename Asseccor::result_type>
 {
-    std::invoke(std::forward<typename Asseccor::value_type>(Asseccor::value), std::forward<Args>(t_args)...);
+    std::invoke(std::forward<typename Asseccor::value_type>(Asseccor::value),
+            std::forward<Args>(t_args)...);
 }
 
-template <typename Asseccor, typename... Args>
-constexpr auto invoke_impl(Args&&... t_args)
-    -> std::enable_if_t<!(std::experimental::is_void_v<assecc_result_t<Asseccor>>), assecc_result_t<Asseccor>>
+template <typename Asseccor, typename Bean, //= typename Asseccor::result_type,
+        typename ... Args>
+constexpr auto invoke_impl(Bean&& t_bean, Args&&... t_args)// -> Res
+    -> std::enable_if_t<!(std::experimental::is_void_v<typename Asseccor::result_type>), typename Asseccor::result_type>
 {
-    return std::invoke(std::forward<typename Asseccor::value_type>(Asseccor::value), std::forward<Args>(t_args)...);
+    return std::invoke(
+            /*std::forward<typename Asseccor::value_type>(*/Asseccor::value/*)*/,
+            std::forward<Bean>(t_bean),
+            std::forward<Args>(t_args)...);
 }
 
 } // anonym
 
 template <typename Index, typename Bean>
-constexpr auto invoke_read(Bean&& t_bean)
-    -> decltype(invoke_impl<read_asseccor<Index>, Bean>(std::forward<Bean>(t_bean)))
+constexpr auto invoke_read(Bean&& t_bean) -> typename read_asseccor<Index>::result_type
+//-> decltype(invoke_impl<read_asseccor<Index>, Bean>(std::forward<Bean>(t_bean)))
 {
-    return invoke_impl<read_asseccor<Index>, Bean>(std::forward<Bean>(t_bean));
+    return invoke_impl<read_asseccor<Index>>(std::forward<Bean>(t_bean));
 }
 
-template <typename Index, typename Bean, typename Arg = assecc_argument_t<write_asseccor<Index>>>
-constexpr void invoke_write(Bean&& t_bean, Arg&& t_arg)
-{
-    invoke_impl<write_asseccor<Index>>(std::forward<Bean>(t_bean), std::forward<Arg>(t_arg));
+//template <typename Index, typename Bean, typename Arg = assecc_argument_t<
+//        write_asseccor<Index>>>
+//constexpr void invoke_write(Bean&& t_bean, Arg&& t_arg)
+//{
+//    invoke_impl<write_asseccor<Index>>(std::forward<Bean>(t_bean), std::forward<Arg>(t_arg));
+//}
+
 }
+ // namespace ref
 
-} // namespace ref
-
-}  // namespace acf
+}// namespace acf
 
 #endif /* BEAN_TRAITS_H_ */
