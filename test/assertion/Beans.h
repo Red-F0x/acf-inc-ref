@@ -23,6 +23,7 @@ public:
 
 public:
     bool bool_value() const { return m_bool_v; }
+    void bool_value(bool t_value) { m_bool_v = t_value; }
 };
 
 ACF_REF_NAME(BasicBaseClass);
@@ -38,7 +39,30 @@ namespace ref
 
 template <>
 struct read_asseccor<acf::ref::index<BasicBaseClass, 0>> :
-    public details::read_asseccor_impl<acf::ref::index<BasicBaseClass, 0>, decltype(&BasicBaseClass::bool_value), &BasicBaseClass::bool_value>
+    public details::read_asseccor_impl<
+        acf::ref::index<BasicBaseClass, 0>,
+        bool (BasicBaseClass::*)() const,
+        (bool (BasicBaseClass::*)() const) &BasicBaseClass::bool_value>
+{
+};
+
+}
+ // namespace ref
+
+}// namespace acf
+
+namespace acf
+{
+
+namespace ref
+{
+
+template <>
+struct write_asseccor<acf::ref::index<BasicBaseClass, 0>> :
+    public details::write_asseccor_impl<
+        acf::ref::index<BasicBaseClass, 0>,
+        bool (BasicBaseClass::*)() const,
+        (bool (BasicBaseClass::*)() const) &BasicBaseClass::bool_value>
 {
 };
 

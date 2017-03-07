@@ -217,6 +217,28 @@ struct some_type
 {
 };
 
+template <typename Stream, typename Type>
+constexpr void deco_on_type(Stream&& t_stream, Type&& t_value)
+{
+    t_stream << t_value;
+}
+
+template <typename Stream>
+constexpr void deco_on_type(Stream&& t_stream, bool t_value)
+{
+    t_stream << std::boolalpha << t_value << std::noboolalpha;
+}
+
+template <typename Type>
+constexpr auto decorate(Type&& t_value)
+{
+    std::stringstream l_ss;
+
+    deco_on_type(l_ss, t_value);//l_ss << t_value;
+
+    return l_ss.str();
+}
+
 template <std::size_t tt_index, typename Bean>
 constexpr void to_string_member(Bean&& t_bean)
 {
@@ -224,7 +246,7 @@ constexpr void to_string_member(Bean&& t_bean)
 
     std::cout << acf::ref::name_v<id>
             << '[' << id::value << ']'
-            << ':' << acf::ref::invoke_read<id>(std::forward<Bean>(t_bean)) << '\n';
+            << ':' << decorate(acf::ref::invoke_read<id>(std::forward<Bean>(t_bean))) << '\n';
 }
 
 /// \todo to_string_impl for bool type
@@ -410,14 +432,12 @@ int main(int t_argc, char* t_argv[])
 
     using id = acf::ref::index<BasicBaseClass, 0>;
     static_assert(std::experimental::is_same_v<acf::ref::read_asseccor<id>::index_type, id>);
-    static_assert(std::experimental::is_same_v<acf::ref::read_asseccor<id>::value_type, decltype(&BasicBaseClass::bool_value)>);
-    static_assert(acf::ref::read_asseccor<id>::value == &BasicBaseClass::bool_value);
+    static_assert(std::experimental::is_same_v<acf::ref::read_asseccor<id>::value_type, bool (BasicBaseClass::*)() const>);
+    static_assert(acf::ref::read_asseccor<id>::value == (bool (BasicBaseClass::*)() const) &BasicBaseClass::bool_value);
 
-    using ra = acf::ref::read_asseccor<id>;
+    static_assert(std::experimental::is_same_v<acf::ref::write_asseccor<id>::index_type, id>);
 
-//    typename ra::member_type test = "";
-    //static_assert(std::experimental::is_same_v<acf::ref::assecc_result_t<ra>, const bool>);
-
-    to_string(BasicBaseClass {});
+    BasicBaseClass l_bbc {};
+    to_string(l_bbc);
 }
 
