@@ -20,34 +20,32 @@ template <std::size_t tt_value>
 using size_constant = std::integral_constant<std::size_t, tt_value>;
 
 template <typename Type>
-struct name
+struct name_of
 {
     static constexpr char value[] { "" };
     using type = decltype(value);
 };
 
 template <typename Type>
-constexpr char name<Type>::value[];
+constexpr char name_of<Type>::value[];
 
 template <typename Type>
-constexpr const char* name_v { acf::ref::name<Type>::value };
+constexpr const char* name_of_v { acf::ref::name_of<Type>::value };
 
 template <typename Type>
-using name_t = typename acf::ref::name<Type>::type;
+using name_of_t = typename acf::ref::name_of<Type>::type;
 
 template <typename Type>
-struct name_size: public acf::ref::size_constant<
-        std::experimental::extent_v<
-                std::remove_reference_t<acf::ref::name_t<Type>>>- 1>
+struct name_size: public acf::ref::size_constant<((std::experimental::extent_v<std::remove_reference_t<acf::ref::name_of_t<Type>>>) - 1)>
 {
 };
 
 template <typename Type>
-constexpr bool name_size_v = acf::ref::name_size<Type>::value;
+constexpr bool name_size_v = acf::ref::name_size < Type > ::value;
 
 template <typename Type>
-struct is_name_empty: public std::bool_constant<
-        (acf::ref::name_size_v<Type> == 0)>
+struct is_name_empty :
+                       public std::bool_constant<(acf::ref::name_size_v<Type> == 0)>
 {
 };
 
@@ -55,7 +53,8 @@ template <typename Type>
 constexpr bool is_name_empty_v = acf::ref::is_name_empty<Type>::value;
 
 template <typename Type>
-struct is_supported: public std::bool_constant<!acf::ref::is_name_empty_v<Type>>
+struct is_supported :
+                      public std::bool_constant<!acf::ref::is_name_empty_v<Type>>
 {
 };
 
