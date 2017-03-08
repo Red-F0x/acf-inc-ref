@@ -25,6 +25,7 @@ template <typename Type, std::size_t tp_index>
 struct index_impl :
                     public acf::ref::size_constant<tp_index>
 {
+    using bean_type = Type;
 };
 
 template <typename Type, std::size_t tp_index>
@@ -42,6 +43,7 @@ namespace
 template <typename Type, std::size_t tt_index>
 constexpr bool is_indexed_impl_0()
 {
+    /// \todo add constrains
     return acf::ref::index_v<Type, tt_index> != std::numeric_limits<std::size_t>::max();
 }
 
@@ -85,7 +87,7 @@ constexpr std::size_t size_v = acf::ref::size<Type>::value;
 
 template <typename Type>
 struct is_bean :
-                 public std::bool_constant<(acf::ref::is_supported_v < Type > &&(acf::ref::size_v<Type> > 0))>
+                 public std::bool_constant<((acf::ref::is_supported_v<Type>) && (acf::ref::size_v<Type> > 0))>
 {
 };
 
@@ -183,25 +185,54 @@ class write_asseccor_impl :
 public:
     /// \todo add constrains
 
+    using arg_type = std::tuple_element_t<0, typename base_type::args_tuple>;
     using member_type = acf::ref::class_of_t<Type>;
 };
 
-} // anonym
+} // namespace details
 
 template <typename Index>
 struct write_asseccor;
 // : public acf::ref::execute_asseccor
 
+template <typename Index, typename Bean>
+constexpr auto invoke_read(Bean&& t_bean) -> typename read_asseccor<Index>::result_type;
+
+template <typename Index>
+class member_type;
+
+template <typename Bean, std::size_t tt_index>
+class member_type<acf::ref::index<Bean, tt_index>> final
+{
+    using bean_type = Bean;
+    static constexpr std::size_t index_v = tt_index;
+    using index_type = acf::ref::index<bean_type, index_v>;
+
+    using type = member_type<index_type>;
+
+    using name_of_type = acf::ref::name_of<index_type>;
+    using read_asseccor_type = read_asseccor<index_type>;
+    using write_asseccor_type = write_asseccor<index_type>;
+
+public:
+    constexpr member_type(const type&) = delete;
+    constexpr member_type(type&&) = delete;
+    constexpr type& operator=(const type&) = delete;
+    constexpr type& operator=(type&&) = delete;
+
+    constexpr member_type() = default;
+    ~member_type() = default;
+
+    constexpr auto index() -> decltype(index_type::value)                                     const { return index_type::value;                         }
+    constexpr auto name()                                                                     const { return name_of_type::value;                       }
+    constexpr auto value(const bean_type& t_bean) -> typename read_asseccor_type::result_type       { return acf::ref::invoke_read<index_type>(t_bean); }
+//    constexpr auto value(const bean_type& t_bean, typename write_asseccor_type::arg_type t_value) -> void { acf::ref::invoke_write<index_type>(t_bean, t_value); }
+
+};
+
 ///
 /// \see read_asseccor
 ///
-//template <typename Asseccor>
-//struct assecc_result : public assecc_result_impl<Asseccor>
-//{
-//};
-//
-//template <typename Asseccor>
-//using assecc_result_t = typename acf::ref::assecc_result<Asseccor>::type;
 
 namespace
 {
@@ -264,11 +295,11 @@ constexpr auto invoke_read(Bean&& t_bean) -> typename read_asseccor<Index>::resu
     return invoke_impl<read_asseccor<Index>>(std::forward<Bean>(t_bean));
 }
 
-//template <typename Index, typename Bean, typename Type = >
-//constexpr auto invoke_write(Bean&& t_bean, Type&& t_arg) -> void
-//{
-//    invoke_impl<write_asseccor<Index>>(std::forward<Bean>(t_bean), std::forward<Arg>(t_arg));
-//}
+template <typename Index, typename Bean, typename Type>
+constexpr auto invoke_write(Bean&& t_bean, Type&& t_value) -> void
+{
+    invoke_impl<write_asseccor<Index>>(std::forward<Bean>(t_bean), std::forward<Type>(t_value));
+}
 
 }
 // namespace ref
