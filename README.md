@@ -40,7 +40,7 @@ First of all we need a c++ object. From the example above, it is an object of ty
 
 The second thing we need is a member function `js << st`  what do the serialisation job for us. I call such a member function: **Service Call**.
 
-### But, what is a Bean?
+## But, what is a Bean?
 
 > From [Wikipedia][java-bean-wiki]: JavaBeans are classes that encapsulate many objects into a single object (the bean). They are serializable, have a zero-argument constructor, and allow access to properties using getter and setter methods.
 
@@ -50,7 +50,7 @@ Ok, let us speak in c++ language. The _property_ is a **non-static member object
 
 >**Note:** From now I call the _property_ **class member**, _getter access method_ **read access** and _setter access method_ **write access**.
 
-#### But, how can one access a class member without having information about this?
+### But, how can one access a class member without having information about this?
 
 The answer is simple: you can not do it. It is not possible without any kind of information about the class. To enable the access to an **class member** we need to _register_ them. Let's say we have a class that looks like this:
 ```c++
@@ -78,7 +78,7 @@ struct index<SomeType, 0> { };
 
 Now we can say what `index<SomeType, 0>` is an data type representing a key for **class member** `m_bvalue`.
 
-#### But a key does not help us as long as we do not have doors/constraints.
+### But a key does not help us as long as we do not have doors/constraints.
 
 And here is the first constrain we have to define.
 ```c++
@@ -136,11 +136,11 @@ constexpr void print(Bean&& t_bean)
 void main()
 {
   SomeType st {};
-  print(st); // print's SomeType and bvalue to the standard output
+  print(st);
 }
 ```
 
-This pseudocode outputs the following:
+This pseudocode outputs the following to the standard output:
 ```shell
 SomeType
 {
@@ -155,7 +155,7 @@ That's it, all we need is to define a [partial template specialization][std-pts]
 - for **class**:
  - `name_of` - to make human readable name of given class
 
-- for **class member**
+- for each **class member**
  - `index` - unique key for class member
  - `name_of` - to make human readable name of given class member
  - `read_access` - to provide read access to class member
