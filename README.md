@@ -40,7 +40,7 @@ First of all we need a c++ object. From the example above, it is an object of ty
 
 The second thing we need is a member function `js << st`  what do the serialisation job for us. I call such a member function: **Service Call**.
 
-### But what is a Bean?
+### But, what is a Bean?
 
 > From [Wikipedia][java-bean-wiki]: JavaBeans are classes that encapsulate many objects into a single object (the bean). They are serializable, have a zero-argument constructor, and allow access to properties using getter and setter methods.
 
@@ -50,7 +50,9 @@ Ok, let us speak in c++ language. The _property_ is a **non-static member object
 
 >**Note:** From now I call the _property_ **class member**, _getter access method_ **read access** and _setter access method_ **write access**.
 
-To enable the access to an **class member** we need to _register_ them. Let's say we have a class that looks like this:
+#### But, how can one access a class member without having information about this?
+
+The answer is simple: you can not do it. It is not possible without any kind of information about the class. To enable the access to an **class member** we need to _register_ them. Let's say we have a class that looks like this:
 ```c++
 class SomeType
 {
@@ -74,7 +76,11 @@ template <>
 struct index<SomeType, 0> { };
 ```
 
-Now we can say what `index<SomeType, 0>` is an data type representing a key for **class member** `m_bvalue`. But a key does not help us as long as we do not have doors/constraints.
+Now we can say what `index<SomeType, 0>` is an data type representing a key for **class member** `m_bvalue`.
+
+#### But a key does not help us as long as we do not have doors/constraints.
+
+And here is the first konstrain we have to define.
 ```c++
 }; // class SomeType
 
@@ -113,7 +119,7 @@ struct write_access<index<SomeType, 0>>
 };
 ```
 
-That's it. Now is it possible to write the code similar to:
+Now is it possible to write the code similar to:
 ```c++
 template <typename Bean>
 constexpr void print(Bean&& t_bean)
@@ -142,6 +148,20 @@ bvalue:0
 }
 ```
 
+## Conclusion
+
+That's it, all we need is to define a [partial template specialization][std-pts] for following cases:
+
+- for **class**:
+ - `name_of` - to make human readable name of given class
+
+- for **class member**
+ - `index` - unique key for class member
+ - `name_of` - to make human readable name of given class member
+ - `read_access` - to provide read access to class member
+ - `write_access` - to provide write access to class member
+
+The remaining work should take over this library.
 [//]: # (The End)
 
 
@@ -150,6 +170,7 @@ bvalue:0
 [java-bean-wiki]: <https://en.wikipedia.org/wiki/JavaBeans>
 [std-is-class]: <http://en.cppreference.com/w/cpp/types/is_class>
 [std-is-constructible]: <http://en.cppreference.com/w/cpp/types/is_constructible>
+[std-pts]: <http://en.cppreference.com/w/cpp/language/partial_specialization>
 
 
 
