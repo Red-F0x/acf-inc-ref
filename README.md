@@ -1,6 +1,6 @@
 # C++ Static Reflection Library
 
-There is a lot of libraries that provide the reflection for c++ and I know the c++ standard committee is currently working on a [c++ reflection library][std-ref] and I guess what you're thinking now: "Oh no, another one!". But I say: "Yes, I need another one", and this one is my own attempt to implement static reflection in c++.
+There is a lot of libraries that provide the reflection for c++ and I know the c++ standard committee is currently working on a [c++ reflection library][std-ref] and I guess what you're thinking now: "Oh no, another one!". But I say: "Yes, this is another one", and this one is my own attempt to implement static reflection in c++.
 
 ## The Goals
 
@@ -9,7 +9,7 @@ The Goal is simple, make this thing possible:
 void main()
 {
   SomeType st {};
-  // make something with st ...
+  // do something with st ...
 
   json_stream js;
   js << st; // this should serialise c++ object to json one
