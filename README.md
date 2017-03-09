@@ -44,7 +44,7 @@ The second thing we need is a member function `js << st`  what do the serialisat
 
 > From [Wikipedia][java-bean-wiki]: JavaBeans are classes that encapsulate many objects into a single object (the bean). They are serializable, have a zero-argument constructor, and allow access to properties using getter and setter methods.
 
-Well, check whether a datatype [is a class][std-is-class] and [have a zero-argument constructor][std-is-constructible] is simple, but what about _access to properties using getter and setter methods_?
+Well, check whether a datatype _[is a class][std-is-class]_ and _[have a zero-argument constructor][std-is-constructible]_ is simple, but what about _access to properties using getter and setter methods_?
 
 Ok, let us speak in c++ language. The _property_ is a **non-static member object** and _getter and setter methods_ are **non-static member function pointers**.
 
