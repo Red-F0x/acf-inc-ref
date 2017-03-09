@@ -18,7 +18,7 @@
 #
 #endif
 
-namespace acf {
+namespace ref {
 
 template <typename Type>
 struct is_incomplete;
@@ -33,6 +33,6 @@ struct is_incomplete;
 template <typename Type, typename... Dependency>
 struct dependet_construct;
 
-}  // namespace acf
+}  // namespace ref
 
 #endif /* STD_TYPE_TRAITS_H_ */

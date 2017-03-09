@@ -92,7 +92,7 @@ constexpr void log(Stream&& t_stream, Types&&... t_value)
 template <typename Type>
 constexpr void size_eq_0(std::experimental::string_view t_type_name)
 {
-    static_assert((acf::ref::size_v<Type> == 0));
+    static_assert((ref::size_v<Type> == 0));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::size_v<", t_type_name, "> == 0)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -101,7 +101,7 @@ constexpr void size_eq_0(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void size_gt_0(std::experimental::string_view t_type_name)
 {
-    static_assert((acf::ref::size_v<Type> > 0));
+    static_assert((ref::size_v<Type> > 0));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::size_v<", t_type_name, "> > 0)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -110,7 +110,7 @@ constexpr void size_gt_0(std::experimental::string_view t_type_name)
 template <typename Type, typename Target>
 constexpr void str_eq(std::experimental::string_view t_type_name, Target&& t_target)
 {
-    static_assert((std::is_same<acf::ref::name_of_t<Type>, std::remove_reference_t<decltype(t_target)>>::value));
+    static_assert((std::is_same<ref::name_of_t<Type>, std::remove_reference_t<decltype(t_target)>>::value));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::name_t<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -119,7 +119,7 @@ constexpr void str_eq(std::experimental::string_view t_type_name, Target&& t_tar
 template <typename Type>
 constexpr void str_neq(std::experimental::string_view t_type_name)
 {
-    static_assert((std::is_same<acf::ref::name_of_t<Type>, std::remove_reference_t<decltype("")>>::value));
+    static_assert((std::is_same<ref::name_of_t<Type>, std::remove_reference_t<decltype("")>>::value));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::name_t<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -128,7 +128,7 @@ constexpr void str_neq(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void name_size_gt_0(std::experimental::string_view t_type_name)
 {
-    static_assert((acf::ref::name_size_v<Type> > 0));
+    static_assert((ref::name_size_v<Type> > 0));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::name_size_v<", t_type_name, "> > 0)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -137,7 +137,7 @@ constexpr void name_size_gt_0(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void name_size_eq_0(std::experimental::string_view t_type_name)
 {
-    static_assert((acf::ref::name_size_v<Type> == 0));
+    static_assert((ref::name_size_v<Type> == 0));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::name_size_v<", t_type_name, "> == 0)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -146,7 +146,7 @@ constexpr void name_size_eq_0(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void name_not_empty(std::experimental::string_view t_type_name)
 {
-    static_assert(!(acf::ref::is_name_empty_v<Type>));
+    static_assert(!(ref::is_name_empty_v<Type>));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "!(acf::ref::name_size_v<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -155,7 +155,7 @@ constexpr void name_not_empty(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void name_empty(std::experimental::string_view t_type_name)
 {
-    static_assert((acf::ref::is_name_empty_v<Type>));
+    static_assert((ref::is_name_empty_v<Type>));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::name_size_v<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -164,7 +164,7 @@ constexpr void name_empty(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void supported(std::experimental::string_view t_type_name)
 {
-    static_assert((acf::ref::is_supported_v<Type>));
+    static_assert((ref::is_supported_v<Type>));
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::is_supported_v<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
 }
@@ -172,7 +172,7 @@ constexpr void supported(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void not_supported(std::experimental::string_view t_type_name)
 {
-    static_assert(!(acf::ref::is_supported_v<Type>));
+    static_assert(!(ref::is_supported_v<Type>));
     log(left_manip(std::cout, '-', 50), "- test \'", "!(acf::ref::is_supported_v<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
 }
@@ -180,7 +180,7 @@ constexpr void not_supported(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void not_bean(std::experimental::string_view t_type_name)
 {
-    static_assert(!(acf::ref::is_bean_v<Type>));
+    static_assert(!(ref::is_bean_v<Type>));
     log(left_manip(std::cout, '-', 50), "- test \'", "!(acf::ref::is_bean_v<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
 }
@@ -188,7 +188,7 @@ constexpr void not_bean(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void bean(std::experimental::string_view t_type_name)
 {
-    static_assert((acf::ref::is_bean_v<Type>));
+    static_assert((ref::is_bean_v<Type>));
     log(left_manip(std::cout, '-', 50), "- test \'", "!(acf::ref::is_bean_v<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
 }
@@ -222,19 +222,13 @@ constexpr auto decorate(Type&& t_value)
 template <std::size_t tt_index, typename Bean>
 constexpr void to_string_member(Bean&& t_bean)
 {
-    using id = acf::ref::index<Bean, tt_index>;
+    using id = ref::index<Bean, tt_index>;
 
-    acf::ref::member_type<id> l_mw { };
+    ref::member_type<id> l_mw { };
 
-    std::cout
-            << '[' << l_mw.index() << ']'
-            << '(' << l_mw.name() << ')'
-//            << '{' << decorate(acf::ref::invoke_read<id>(std::forward<Bean>(t_bean))) << '}'
-            << '{' << decorate(l_mw.value(/*std::forward<Bean>(*/t_bean/*)*/)) << '}'
-            << '\n';
+    std::cout << '[' << l_mw.index() << ']' << '(' << l_mw.name() << ')' << '{'
+            << decorate(l_mw.value(t_bean)) << '}' << '\n';
 }
-
-/// \todo to_string_impl for bool type
 
 template <typename Bean, std::size_t ... tt_indexes>
 constexpr void to_string_impl(Bean&& t_bean, std::index_sequence<tt_indexes...>)
@@ -245,17 +239,15 @@ constexpr void to_string_impl(Bean&& t_bean, std::index_sequence<tt_indexes...>)
 template <typename Bean>
 constexpr void to_string(Bean&& t_bean)
 {
-std::cout << acf::ref::name_of_v<Bean> << '[' << acf::ref::size_v<Bean> << ']' << '\n';
+std::cout << ref::name_of_v<Bean> << '[' << ref::size_v<Bean> << ']' << '\n';
 std::cout << '{' << '\n';
-to_string_impl(std::forward<Bean>(t_bean), std::make_index_sequence<acf::ref::size_v<Bean>> { });
+to_string_impl(std::forward<Bean>(t_bean), std::make_index_sequence<ref::size_v<Bean>> { });
 std::cout << '}' << '\n';
 }
 
 int main(int t_argc, char* t_argv[])
 {
 std::cout << "run test from \'" << t_argv[0] << "\' argc \'" << t_argc << '\'' << '\n';
-
-using namespace acf;
 
 std::cout << "assertion test" << '\n';
 
@@ -379,8 +371,6 @@ ACF_REF_ASSERTION_TEST_SUPPORTED(BasicBaseClass);
 
 std::cout << "- test \'sdk::is_supported_v<?>\' - OK" << '\n';
 
-std::cout << acf::ref::is_bean<void>::value << '\n';
-
 ACF_REF_ASSERTION_TEST_NOT_BEAN(void);
 ACF_REF_ASSERTION_TEST_NOT_BEAN(decltype(nullptr));
 ACF_REF_ASSERTION_TEST_NOT_BEAN(bool);
@@ -405,22 +395,24 @@ ACF_REF_ASSERTION_TEST_BEAN(BasicBaseClass);
 
 std::cout << "- test \'sdk::is_bean_v<?>\' - OK" << '\n';
 
-std::cout << acf::ref::index_v<void, 0> << '\n';
-std::cout << acf::ref::index_v<some_type, 0> << '\n';
-std::cout << acf::ref::index_v<BasicBaseClass, 0> << '\n';
+std::cout << ref::index_v<void, 0> << '\n';
+std::cout << ref::index_v<some_type, 0> << '\n';
+std::cout << ref::index_v<BasicBaseClass, 0> << '\n';
 
-std::cout << acf::ref::is_indexed_v<void> << '\n';
-std::cout << acf::ref::is_indexed_v<some_type> << '\n';
-std::cout << acf::ref::is_indexed_v<BasicBaseClass> << '\n';
+std::cout << ref::is_indexed_v<void> << '\n';
+std::cout << ref::is_indexed_v<some_type> << '\n';
+std::cout << ref::is_indexed_v<BasicBaseClass> << '\n';
 
-using id = acf::ref::index<BasicBaseClass, 0>;
-static_assert(std::experimental::is_same_v<acf::ref::read_asseccor<id>::index_type, id>);
-static_assert(std::experimental::is_same_v<acf::ref::read_asseccor<id>::value_type, bool (BasicBaseClass::*)() const>);
-static_assert(acf::ref::read_asseccor<id>::value == (bool (BasicBaseClass::*)() const) &BasicBaseClass::bool_value);
+using id = ref::index<BasicBaseClass, 0>;
+static_assert(std::experimental::is_same_v<ref::read_asseccor<id>::index_type, id>);
+static_assert(std::experimental::is_same_v<ref::read_asseccor<id>::value_type, bool (BasicBaseClass::*)() const>);
+static_assert(ref::read_asseccor<id>::value == (bool (BasicBaseClass::*)() const) &BasicBaseClass::bool_value);
 
-static_assert(std::experimental::is_same_v<acf::ref::write_asseccor<id>::index_type, id>);
+static_assert(std::experimental::is_same_v<ref::write_asseccor<id>::index_type, id>);
 
 BasicBaseClass l_bbc { };
+ref::member_type<id> l_mem { };
+l_mem.value(l_bbc, false);
 to_string(std::forward<BasicBaseClass>(l_bbc));
 }
 

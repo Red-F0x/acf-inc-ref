@@ -22,8 +22,14 @@ public:
     virtual ~BasicBaseClass() = default;
 
 public:
-    bool bool_value() const { return m_bool_v; }
-    void bool_value(bool t_value) { m_bool_v = t_value; }
+    bool bool_value() const
+    {
+        return m_bool_v;
+    }
+    void bool_value(bool t_value)
+    {
+        m_bool_v = t_value;
+    }
 };
 
 ACF_REF_NAME(BasicBaseClass);
@@ -31,44 +37,32 @@ ACF_REF_NAME(BasicBaseClass);
 ACF_REF_INDEX(BasicBaseClass, 0);
 ACF_REF_MEM_NAME(BasicBaseClass, 0, bool_value);
 
-namespace acf
+namespace ref
 {
+
+template <>
+struct read_asseccor<ref::index<BasicBaseClass, 0>> :
+                                                           public details::read_asseccor_impl<
+                                                                   ref::index<BasicBaseClass, 0>,
+                                                                   bool (BasicBaseClass::*)() const,
+                                                                   (bool (BasicBaseClass::*)() const) &BasicBaseClass::bool_value>
+{
+};
+
+} // namespace ref
 
 namespace ref
 {
 
 template <>
-struct read_asseccor<acf::ref::index<BasicBaseClass, 0>> :
-    public details::read_asseccor_impl<
-        acf::ref::index<BasicBaseClass, 0>,
-        bool (BasicBaseClass::*)() const,
-        (bool (BasicBaseClass::*)() const) &BasicBaseClass::bool_value>
+struct write_asseccor<ref::index<BasicBaseClass, 0>> :
+                                                            public details::write_asseccor_impl<
+                                                                    ref::index<BasicBaseClass, 0>,
+                                                                    void (BasicBaseClass::*)(bool),
+                                                                    (void (BasicBaseClass::*)(bool)) &BasicBaseClass::bool_value>
 {
 };
 
-}
- // namespace ref
-
-}// namespace acf
-
-namespace acf
-{
-
-namespace ref
-{
-
-template <>
-struct write_asseccor<acf::ref::index<BasicBaseClass, 0>> :
-    public details::write_asseccor_impl<
-        acf::ref::index<BasicBaseClass, 0>,
-        bool (BasicBaseClass::*)() const,
-        (bool (BasicBaseClass::*)() const) &BasicBaseClass::bool_value>
-{
-};
-
-}
- // namespace ref
-
-}// namespace acf
+} // namespace ref
 
 #endif /* BEANS_H_ */

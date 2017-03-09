@@ -12,9 +12,6 @@
 
 #include "acf/ref/bits/preprocessor.hpp"
 
-namespace acf
-{
-
 namespace ref
 {
 
@@ -202,7 +199,5 @@ struct name_of<long double>
 constexpr char name_of<long double>::value[];
 
 }  // namespace ref
-
-}  // namespace acf
 
 #endif /* TYPE_TRAITS_HPP_ */

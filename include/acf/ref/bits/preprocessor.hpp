@@ -20,8 +20,6 @@
 /// specialize template class name for given \a Type
 ///
 #define ACF_REF_NAME(Type)                                          \
-namespace acf {                                                     \
-                                                                    \
 namespace ref {                                                     \
                                                                     \
 template <>                                                         \
@@ -33,8 +31,6 @@ struct name_of<Type>                                                \
                                                                     \
 constexpr char name_of<Type>::value[];                              \
                                                                     \
-}                                                                   \
-                                                                    \
 }
 
 ///
@@ -42,15 +38,11 @@ constexpr char name_of<Type>::value[];                              \
 /// specialize template class index for given \a Type and \a tt_index
 ///
 #define ACF_REF_INDEX(Type, tt_index)                               \
-namespace acf {                                                     \
-                                                                    \
 namespace ref {                                                     \
                                                                     \
 template <>                                                         \
 struct index<Type, tt_index> :                                      \
-    public acf::ref::index_impl<Type, tt_index> {};                 \
-                                                                    \
-}                                                                   \
+    public ref::index_impl<Type, tt_index> {};                      \
                                                                     \
 }
 
@@ -59,20 +51,16 @@ struct index<Type, tt_index> :                                      \
 /// specialize template class name for given \a Type and \a tt_index \a tt_name
 ///
 #define ACF_REF_MEM_NAME(Type, tt_index, tt_name)                   \
-namespace acf {                                                     \
-                                                                    \
 namespace ref {                                                     \
                                                                     \
 template <>                                                         \
-struct name_of<acf::ref::index<Type, tt_index>>                     \
+struct name_of<ref::index<Type, tt_index>>                          \
 {                                                                   \
     static constexpr char value[] = #tt_name;                       \
     using type = decltype(value);                                   \
 };                                                                  \
                                                                     \
-constexpr char name_of<acf::ref::index<Type, tt_index>>::value[];   \
-                                                                    \
-}                                                                   \
+constexpr char name_of<ref::index<Type, tt_index>>::value[];        \
                                                                     \
 }
 
