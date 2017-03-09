@@ -1,12 +1,12 @@
 # C++ Static Reflection Library
 
-There is a lot of libraries that provide the reflection for c++ and i guess what you're thinking now: "Oh no, another one!". And I say: "Yes, i need another one", and this one is my own attempt to implement static reflection in c++.
+There is a lot of libraries that provide the reflection for c++ and I know the c++ standard committee is currently working on a [c++ reflection library][std-ref] and I guess what you're thinking now: "Oh no, another one!". But I say: "Yes, I need another one", and this one is my own attempt to implement static reflection in c++.
 
 ## The Goals
 
 The Goal is simple, make this thing possible:
 ```c++
-int main()
+void main()
 {
   SomeType st {};
   // make something with st ...
@@ -21,8 +21,6 @@ int main()
   cs << st; // and this to csv
 
   // and so one ...
-
-  return 0;
 }
 ```
 
@@ -34,7 +32,7 @@ json_stream js;
 js >> st;
 ```
 
-But let's start with simple things first: output.
+But let's start with simple things first: the output.
 
 ## What do we need to make serialisation/reflection possible in c++?
 
@@ -42,8 +40,116 @@ First of all we need a c++ object. From the example above, it is an object of ty
 
 The second thing we need is a member function `js << st`  what do the serialisation job for us. I call such a member function: **Service Call**.
 
+### But what is a Bean?
+
+> From [Wikipedia][java-bean-wiki]: JavaBeans are classes that encapsulate many objects into a single object (the bean). They are serializable, have a zero-argument constructor, and allow access to properties using getter and setter methods.
+
+Well, check whether a datatype [is a class][std-is-class] and [have a zero-argument constructor][std-is-constructible] is simple, but what about _access to properties using getter and setter methods_?
+
+Ok, let us speak in c++ language. The _property_ is a **non-static member object** and _getter and setter methods_ are **non-static member function pointers**.
+
+>**Note:** From now I call the _property_ **class member**, _getter access method_ **read access** and _setter access method_ **write access**.
+
+To enable the access to an **class member** we need to _register_ them. Let's say we have a class that looks like this:
+```c++
+class SomeType
+{
+
+  bool m_bvalue { false };
+
+public:
+  bool getBvalue()              const { return m_bvalue;     }
+  void setBvalue(bool t_bvalue)       { m_bvalue = t_bvalue; }
+
+}; // class SomeType
+```
+
+This class has one **class member** called `m_bvalue` and two access member functions: first for **read access** `bool getBvalue() const` and second for **write access** `void setBvalue(bool)`.
+
+With help of enumeration/indexing and metaprogramming is it possible to _register_ **class member** for later use in **Service Call**. We extend our example code.
+```c++
+}; // class SomeType
+
+template <>
+struct index<SomeType, 0> { };
+```
+
+Now we can say what `index<SomeType, 0>` is an data type representing a key for **class member** `m_bvalue`. But a key does not help us as long as we do not have doors/constraints.
+```c++
+}; // class SomeType
+
+template <>
+struct name_of<SomeType>
+{
+  static constexpr char value[] { "SomeType" };
+};
+
+template <>
+struct index<SomeType, 0> { };
+
+template <>
+struct name_of<index<SomeType, 0>>
+{
+  static constexpr char value[] { "bvalue" };
+}; // name_of m_bvalue
+```
+
+The next step needs a little more tap work, as we need the access to our **class member**.
+```c++
+}; // name_of m_bvalue
+
+template <>
+struct read_access<index<SomeType, 0>>
+{
+  using value_type = decltype(&SomeType::getBvalue);
+  static constexpr value_type value = &SomeType::getBvalue;
+};
+
+template <>
+struct write_access<index<SomeType, 0>>
+{
+  using value_type = decltype(&SomeType::setBvalue);
+  static constexpr value_type value = &SomeType::setBvalue;
+};
+```
+
+That's it. Now is it possible to write the code similar to:
+```c++
+template <typename Bean>
+constexpr void print(Bean&& t_bean)
+{
+  std::cout << name_of<Bean>::value << '\n';
+  std::cout << '{' << '\n';
+
+  using index_type = index<Bean, 0>;
+  std::cout << name_of<index_type>::value << ':' << (t_bean.*read_access<index_type>::value)() << '\n';
+
+  std::cout << '}' << '\n';
+}
+
+void main()
+{
+  SomeType st {};
+  print(st); // print's SomeType and bvalue to the standard output
+}
+```
+
+This pseudocode outputs the following:
+```shell
+SomeType
+{
+bvalue:0
+}
+```
+
+[//]: # (The End)
 
 
+[//]: # (Used links)
+[std-ref]: <https://meetingcpp.com/index.php/br/items/reflections-on-the-reflection-proposals.html>
+[java-bean-wiki]: <https://en.wikipedia.org/wiki/JavaBeans>
+[std-is-class]: <http://en.cppreference.com/w/cpp/types/is_class>
+[std-is-constructible]: <http://en.cppreference.com/w/cpp/types/is_constructible>
 
 
 
