@@ -80,7 +80,7 @@ Now we can say what `index<SomeType, 0>` is an data type representing a key for 
 
 #### But a key does not help us as long as we do not have doors/constraints.
 
-And here is the first konstrain we have to define.
+And here is the first constrain we have to define.
 ```c++
 }; // class SomeType
 
