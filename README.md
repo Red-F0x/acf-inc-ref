@@ -1,6 +1,6 @@
 # C++ Static Reflection Library
 
-There is a lot of libraries that provide the reflection for c++ and I know the c++ standard committee is currently working on a [c++ reflection library][std-ref] and I guess what you're thinking now: "Oh no, another one!". But I say: "Yes, this is another one", and this one is my own attempt to implement static reflection in c++.
+There is a [lot of libraries][boost-hana] that provide the reflection for c++ and I know the c++ standard committee is currently working on a [c++ reflection library][std-ref] and I guess what you're thinking now: "Oh no, another one!". But I say: "Yes, this is another one", and this one is my own attempt to implement static reflection in c++.
 
 ## The Goals
 
@@ -166,6 +166,7 @@ The remaining work should take over this library.
 
 
 [//]: # (Used links)
+[boost-hana]: <http://www.boost.org/doc/libs/1_63_0/libs/hana/doc/html/index.html>
 [std-ref]: <https://meetingcpp.com/index.php/br/items/reflections-on-the-reflection-proposals.html>
 [java-bean-wiki]: <https://en.wikipedia.org/wiki/JavaBeans>
 [std-is-class]: <http://en.cppreference.com/w/cpp/types/is_class>
