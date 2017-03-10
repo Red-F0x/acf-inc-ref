@@ -46,7 +46,7 @@ The second thing we need is a member function `js << st`  what do the serialisat
 
 Well, check whether a datatype _[is a class][std-is-class]_ and _[have a zero-argument constructor][std-is-constructible]_ is simple, but what about _access to properties using getter and setter methods_?
 
-Ok, let us speak in c++ language. The _property_ is a **non-static member object** and _getter and setter methods_ are **non-static member function pointers**.
+Ok, let us speak in c++ language. The _property_ is a **[non-static member object][std-data-mem]** and _getter and setter methods_ are **[non-static member function pointers][std-mem-fnc]**.
 
 >**Note:** From now I call the _property_ **class member**, _getter access method_ **read access** and _setter access method_ **write access**.
 
@@ -162,6 +162,9 @@ That's it, all we need is to define a [partial template specialization][std-pts]
  - `write_access` - to provide write access to class member
 
 The remaining work should take over this library.
+
+___
+[//]: # ([](){}();)
 [//]: # (The End)
 
 
@@ -171,15 +174,8 @@ The remaining work should take over this library.
 [java-bean-wiki]: <https://en.wikipedia.org/wiki/JavaBeans>
 [std-is-class]: <http://en.cppreference.com/w/cpp/types/is_class>
 [std-is-constructible]: <http://en.cppreference.com/w/cpp/types/is_constructible>
+[std-data-mem]: <http://en.cppreference.com/w/cpp/language/data_members>
+[std-mem-fnc]: <http://en.cppreference.com/w/cpp/language/member_functions>
 [std-pts]: <http://en.cppreference.com/w/cpp/language/partial_specialization>
 
-
-
-
-
-
-
-
-
-
-
+[//]: # (Used Images)
