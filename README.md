@@ -1,3 +1,10 @@
+|         | Travis CI |
+| :------ | :-------- |
+| master  | [![Build Status](https://travis-ci.org/Red-F0x/acf-inc-ref.svg?branch=master)](https://travis-ci.org/Red-F0x/acf-inc-ref)  |
+| develop | [![Build Status](https://travis-ci.org/Red-F0x/acf-inc-ref.svg?branch=develop)](https://travis-ci.org/Red-F0x/acf-inc-ref) |
+
+___
+
 # C++ Static Reflection Library
 
 There is a [lot of libraries][boost-hana] that provide the reflection for c++ and I know the c++ standard committee is currently working on a [c++ reflection library][std-ref] and I guess what you're thinking now: "Oh no, another one!". But I say: "Yes, this is another one", and this one is my own attempt to implement static reflection in c++.
@@ -162,6 +169,8 @@ That's it, all we need is to define a [partial template specialization][std-pts]
  - `write_access` - to provide write access to class member
 
 The remaining work should take over this library.
+
+An full work example coming soon.
 
 ___
 [//]: # ([](){}();)
