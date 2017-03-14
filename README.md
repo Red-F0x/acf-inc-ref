@@ -159,21 +159,20 @@ bvalue:0
 
 That's it, all we need is to define a [partial template specialization][std-pts] for following cases:
 
-- for **class**:
- - `name_of` - to make human readable name of the given class
+for **class**:
+- `name_of`, to make human readable name of the given class
 
-- for each **class member**
- - `index` - unique key for class member
- - `name_of` - to make human readable name of the given class member
- - `read_access` - to provide read access to class member
- - `write_access` - to provide write access to class member
+for each **class member**:
+- `index`, an unique key for class member
+- `name_of`, to make human readable name of the given class member
+- `read_access`, to provide read access to class member
+- `write_access`, to provide write access to class member
 
 The remaining work should take over this library.
 
 An full work example coming soon.
 
 ___
-[//]: # ([](){}();)
 [//]: # (The End)
 
 
