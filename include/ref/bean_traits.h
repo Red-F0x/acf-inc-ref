@@ -8,9 +8,10 @@
 #ifndef BEAN_TRAITS_H_
 #define BEAN_TRAITS_H_
 
+#include <ref/bits/preprocessor.h>
 #include <functional>
 
-#include "acf/ref/type_traits.h"
+#include "ref/bits/name_of.h"
 
 namespace ref
 {

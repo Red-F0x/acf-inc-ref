@@ -10,10 +10,8 @@
 /// <a href="http://en.cppreference.com/w/cpp/preprocessor">this link</a>.
 ///
 
-#ifndef PREPROCESSOR_HPP_
-#define PREPROCESSOR_HPP_
-
-#include "acf/std_type_traits.h"
+#ifndef PREPROCESSOR_H_
+#define PREPROCESSOR_H_
 
 ///
 /// \def ACF_REF_NAME(Type)
@@ -64,4 +62,4 @@ constexpr char name_of<ref::index<Type, tt_index>>::value[];        \
                                                                     \
 }
 
-#endif /* PREPROCESSOR_HPP_ */
+#endif /* PREPROCESSOR_H_ */

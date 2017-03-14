@@ -8,7 +8,7 @@
 #ifndef TYPE_TRAITS_H_
 #define TYPE_TRAITS_H_ 1
 
-#include <type_traits>
+#include "ref/bits/std_type_traits.h"
 
 namespace ref {
 

@@ -34,6 +34,7 @@ using supported_types = std::tuple<
 
 void is_complete_test();
 void has_value_test();
+void is_named();
 
 
 #endif /* ASSERTION_TEST_H_ */

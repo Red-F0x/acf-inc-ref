@@ -16,7 +16,7 @@ namespace ref {
 namespace {
 
 template <typename Type>
-struct is_named_impl : public std::bool_constant<ref::is_complete<Type>::value>
+struct is_named_impl : public std::bool_constant<ref::is_complete_v<Type>>
 {
 };
 
@@ -53,6 +53,25 @@ struct name_size: public name_size_impl<name_of<Type>, is_named_v<Type>>
 
 template <typename Type>
 constexpr bool name_size_v = ref::name_size < Type > ::value;
+
+///////////////
+template <typename Type>
+struct is_name_empty :
+                       public std::bool_constant<(ref::name_size_v<Type> == 0)>
+{
+};
+
+template <typename Type>
+constexpr bool is_name_empty_v = ref::is_name_empty<Type>::value;
+
+template <typename Type>
+struct is_supported :
+                      public std::bool_constant<!ref::is_name_empty_v<Type>>
+{
+};
+
+template <typename Type>
+constexpr bool is_supported_v = ref::is_supported<Type>::value;
 
 }  // namespace ref
 

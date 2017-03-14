@@ -8,7 +8,7 @@
 #ifndef BEANS_H_
 #define BEANS_H_
 
-#include "acf/ref/bean_traits.h"
+#include "ref/bean_traits.h"
 
 class BasicBaseClass
 {

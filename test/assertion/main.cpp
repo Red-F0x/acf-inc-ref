@@ -250,6 +250,8 @@ int main(int t_argc, char* t_argv[])
 {
     is_complete_test();
     has_value_test();
+
+    is_named();
 std::cout << "run test from \'" << t_argv[0] << "\' argc \'" << t_argc << '\'' << '\n';
 
 std::cout << "assertion test" << '\n';
@@ -463,6 +465,7 @@ class IncompleteType;
 void is_complete_test()
 {
     is_complete_test_impl<supported_types> {} ();
+    is_complete_test_impl<std::tuple<void>> {} ();
     is_complete_test_impl<std::tuple<CompleteType>> {} ();
 //    is_complete_test_impl<std::tuple<IncompleteType>> {} (); // fails -> Ok
     is_incomplete_test_impl<std::tuple<IncompleteType>> {} ();
@@ -508,5 +511,10 @@ void has_value_test()
     has_value_test_impl<supported_types, true> {} ();
     has_value_test_impl<std::tuple<HasValueType>> {} ();
     has_value_test_impl<std::tuple<NoValueType>, true> {} ();
+}
+
+void is_named()
+{
+    static_assert(ref::is_named_v<void>, "");
 }
 
