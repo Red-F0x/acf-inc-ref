@@ -10,6 +10,7 @@
 #include <string>
 #include <sstream>
 
+#include "assertion_test.h"
 #include "Beans.h"
 
 //#define ACF_REF_TO_STRING(...) #__VA_ARGS__
@@ -110,7 +111,7 @@ constexpr void size_gt_0(std::experimental::string_view t_type_name)
 template <typename Type, typename Target>
 constexpr void str_eq(std::experimental::string_view t_type_name, Target&& t_target)
 {
-    static_assert((std::is_same<ref::name_of_t<Type>, std::remove_reference_t<decltype(t_target)>>::value));
+//    static_assert((std::is_same<ref::name_of_t<Type>, std::remove_reference_t<decltype(t_target)>>::value));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::name_t<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -119,7 +120,7 @@ constexpr void str_eq(std::experimental::string_view t_type_name, Target&& t_tar
 template <typename Type>
 constexpr void str_neq(std::experimental::string_view t_type_name)
 {
-    static_assert((std::is_same<ref::name_of_t<Type>, std::remove_reference_t<decltype("")>>::value));
+//    static_assert((std::is_same<ref::name_of_t<Type>, std::remove_reference_t<decltype("")>>::value));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::name_t<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -128,7 +129,7 @@ constexpr void str_neq(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void name_size_gt_0(std::experimental::string_view t_type_name)
 {
-    static_assert((ref::name_size_v<Type> > 0));
+//    static_assert((ref::name_size_v<Type> > 0));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::name_size_v<", t_type_name, "> > 0)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -146,7 +147,7 @@ constexpr void name_size_eq_0(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void name_not_empty(std::experimental::string_view t_type_name)
 {
-    static_assert(!(ref::is_name_empty_v<Type>));
+//    static_assert(!(ref::is_name_empty_v<Type>));
 
     log(left_manip(std::cout, '-', 50), "- test \'", "!(acf::ref::name_size_v<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
@@ -164,7 +165,7 @@ constexpr void name_empty(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void supported(std::experimental::string_view t_type_name)
 {
-    static_assert((ref::is_supported_v<Type>));
+//    static_assert((ref::is_supported_v<Type>));
     log(left_manip(std::cout, '-', 50), "- test \'", "(acf::ref::is_supported_v<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
 }
@@ -239,7 +240,7 @@ constexpr void to_string_impl(Bean&& t_bean, std::index_sequence<tt_indexes...>)
 template <typename Bean>
 constexpr void to_string(Bean&& t_bean)
 {
-std::cout << ref::name_of_v<Bean> << '[' << ref::size_v<Bean> << ']' << '\n';
+//std::cout << ref::name_of_v<Bean> << '[' << ref::size_v<Bean> << ']' << '\n';
 std::cout << '{' << '\n';
 to_string_impl(std::forward<Bean>(t_bean), std::make_index_sequence<ref::size_v<Bean>> { });
 std::cout << '}' << '\n';
@@ -247,6 +248,8 @@ std::cout << '}' << '\n';
 
 int main(int t_argc, char* t_argv[])
 {
+    is_complete_test();
+    has_value_test();
 std::cout << "run test from \'" << t_argv[0] << "\' argc \'" << t_argc << '\'' << '\n';
 
 std::cout << "assertion test" << '\n';
@@ -414,5 +417,96 @@ BasicBaseClass l_bbc { };
 ref::member_type<id> l_mem { };
 l_mem.value(l_bbc, false);
 to_string(std::forward<BasicBaseClass>(l_bbc));
+}
+
+template <typename Type>
+struct is_complete_test_impl;
+
+template <typename... Types>
+class is_complete_test_impl<std::tuple<Types...>>
+{
+    template <typename Type>
+    void impl()
+    {
+        static_assert(ref::is_complete_v<Type>, "");
+    }
+
+public:
+    void operator()()
+    {
+        (impl<Types>(), ...);
+    }
+};
+
+template <typename Type>
+class is_incomplete_test_impl;
+
+template <typename... Types>
+class is_incomplete_test_impl<std::tuple<Types...>>
+{
+    template <typename Type>
+    void impl()
+    {
+        static_assert(ref::is_incomplete_v<Type>, "");
+    }
+
+public:
+    void operator()()
+    {
+        (impl<Types>(), ...);
+    }
+};
+
+class CompleteType {};
+class IncompleteType;
+
+void is_complete_test()
+{
+    is_complete_test_impl<supported_types> {} ();
+    is_complete_test_impl<std::tuple<CompleteType>> {} ();
+//    is_complete_test_impl<std::tuple<IncompleteType>> {} (); // fails -> Ok
+    is_incomplete_test_impl<std::tuple<IncompleteType>> {} ();
+}
+
+template <typename Type, bool tt_negate = false>
+class has_value_test_impl;
+
+template <typename... Types, bool tt_negate>
+class has_value_test_impl<std::tuple<Types...>, tt_negate>
+{
+    template <template <typename> typename Trait, typename Type>
+    static constexpr bool check()
+    {
+        return (tt_negate ? !(Trait<Type>::value) : (Trait<Type>::value));
+    }
+
+    template <typename Type>
+    void impl()
+    {
+        static_assert(check<ref::has_value, Type>(), "");
+    }
+
+public:
+    void operator()()
+    {
+        (impl<Types>(), ...);
+    }
+};
+
+class HasValueType
+{
+public:
+    static constexpr bool value = true;
+};
+
+class NoValueType
+{
+};
+
+void has_value_test()
+{
+    has_value_test_impl<supported_types, true> {} ();
+    has_value_test_impl<std::tuple<HasValueType>> {} ();
+    has_value_test_impl<std::tuple<NoValueType>, true> {} ();
 }
 

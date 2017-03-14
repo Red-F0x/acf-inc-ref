@@ -1,19 +1,14 @@
-///
-/// \file include/acf/ref/bits/type_traits.hpp
-///
-/// Created on: 09.02.2017
-/// Author: ho11owman
-///
-/// \brief prowide several template specializations for class name.
-///
+//
+// name_of_impl.h
+//
+//  Created on: 13.03.2017
+//      Author: ho11owman
+//
 
-#ifndef TYPE_TRAITS_HPP_
-#define TYPE_TRAITS_HPP_
+#ifndef NAME_OF_IMPL_H_
+#define NAME_OF_IMPL_H_ 1
 
-#include "acf/ref/bits/preprocessor.hpp"
-
-namespace ref
-{
+namespace ref {
 
 template <typename Type>
 struct name_of;
@@ -198,6 +193,6 @@ struct name_of<long double>
 
 constexpr char name_of<long double>::value[];
 
-}  // namespace ref
+}
 
-#endif /* TYPE_TRAITS_HPP_ */
+#endif /* NAME_OF_IMPL_H_ */

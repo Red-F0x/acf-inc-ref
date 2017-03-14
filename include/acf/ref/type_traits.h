@@ -5,40 +5,31 @@
 ///      Author: ho11owman
 ///
 
-#ifndef TYPE_TRAITS_H_
-#define TYPE_TRAITS_H_
+#ifndef TYPE_TRAITS_H__
+#define TYPE_TRAITS_H__
 
-#include "acf/ref/bits/type_traits.hpp"
+#include <ref/bits/name_of.h>
+
+#include "acf/ref/bits/preprocessor.hpp"
 
 namespace ref
 {
 
-template <std::size_t tt_value>
-using size_constant = std::integral_constant<std::size_t, tt_value>;
-
-template <typename Type>
-struct name_of
-{
-    static constexpr char value[] { "" };
-    using type = decltype(value);
-};
-
-template <typename Type>
-constexpr char name_of<Type>::value[];
-
-template <typename Type>
-constexpr const char* name_of_v { ref::name_of<Type>::value };
-
-template <typename Type>
-using name_of_t = typename ref::name_of<Type>::type;
-
-template <typename Type>
-struct name_size: public ref::size_constant<((std::experimental::extent_v<std::remove_reference_t<ref::name_of_t<Type>>>) - 1)>
-{
-};
-
-template <typename Type>
-constexpr bool name_size_v = ref::name_size < Type > ::value;
+//template <typename Type>
+//struct name_of
+//{
+//    static constexpr char value[] { "" };
+//    using type = decltype(value);
+//};
+//
+//template <typename Type>
+//constexpr char name_of<Type>::value[];
+//
+//template <typename Type>
+//constexpr const char* name_of_v { ref::name_of<Type>::value };
+//
+//template <typename Type>
+//using name_of_t = typename ref::name_of<Type>::type;
 
 template <typename Type>
 struct is_name_empty :
@@ -60,4 +51,4 @@ constexpr bool is_supported_v = ref::is_supported<Type>::value;
 
 }  // namespace ref
 
-#endif /* TYPE_TRAITS_H_ */
+#endif /* TYPE_TRAITS_H__ */
