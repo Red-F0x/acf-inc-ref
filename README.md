@@ -1,8 +1,7 @@
-|         | Travis CI |
-| :------ | :-------- |
-| master  | [![Build Status](https://travis-ci.org/Red-F0x/acf-inc-ref.svg?branch=master)](https://travis-ci.org/Red-F0x/acf-inc-ref)  |
-| develop | [![Build Status](https://travis-ci.org/Red-F0x/acf-inc-ref.svg?branch=develop)](https://travis-ci.org/Red-F0x/acf-inc-ref) |
-
+|      |Travis CI|AppVeyor|
+|:-----|:--------|:-------|
+|master|[![Build Status](https://travis-ci.org/Red-F0x/acf-inc-ref.svg?branch=master)](https://travis-ci.org/Red-F0x/acf-inc-ref)|[![Build status](https://ci.appveyor.com/api/projects/status/sn5fycj53m93cva2/branch/master?svg=true)](https://ci.appveyor.com/project/Red-F0x/acf-inc-ref/branch/master)|
+|develop|[![Build Status](https://travis-ci.org/Red-F0x/acf-inc-ref.svg?branch=develop)](https://travis-ci.org/Red-F0x/acf-inc-ref)|[![Build status](https://ci.appveyor.com/api/projects/status/sn5fycj53m93cva2/branch/develop?svg=true)](https://ci.appveyor.com/project/Red-F0x/acf-inc-ref/branch/develop)|
 ___
 
 # C++ Static Reflection Library
