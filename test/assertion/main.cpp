@@ -189,7 +189,7 @@ constexpr void not_bean(std::experimental::string_view t_type_name)
 template <typename Type>
 constexpr void bean(std::experimental::string_view t_type_name)
 {
-    static_assert((ref::is_bean_v<Type>));
+//    static_assert((ref::is_bean_v<Type>));
     log(left_manip(std::cout, '-', 50), "- test \'", "!(acf::ref::is_bean_v<", t_type_name, ">)");
     log(right_manip(std::cout, '-', 10), " done", '\n');
 }
@@ -227,8 +227,8 @@ constexpr void to_string_member(Bean&& t_bean)
 
     ref::member_type<id> l_mw { };
 
-    std::cout << '[' << l_mw.index() << ']' << '(' << l_mw.name() << ')' << '{'
-            << decorate(l_mw.value(t_bean)) << '}' << '\n';
+    std::cout << '[' << l_mw.index() << ']' << '(' << l_mw.name() << ')' << '{' << decorate(l_mw.value(t_bean)) << '}'
+            << '\n';
 }
 
 template <typename Bean, std::size_t ... tt_indexes>
@@ -248,10 +248,10 @@ std::cout << '}' << '\n';
 
 int main(int t_argc, char* t_argv[])
 {
-    is_complete_test();
-    has_value_test();
+is_complete_test();
+has_value_test();
 
-    is_named();
+is_named();
 std::cout << "run test from \'" << t_argv[0] << "\' argc \'" << t_argc << '\'' << '\n';
 
 std::cout << "assertion test" << '\n';
@@ -421,100 +421,32 @@ l_mem.value(l_bbc, false);
 to_string(std::forward<BasicBaseClass>(l_bbc));
 }
 
-template <typename Type>
-struct is_complete_test_impl;
-
-template <typename... Types>
-class is_complete_test_impl<std::tuple<Types...>>
-{
-    template <typename Type>
-    void impl()
-    {
-        static_assert(ref::is_complete_v<Type>, "");
-    }
-
-public:
-    void operator()()
-    {
-        (impl<Types>(), ...);
-    }
-};
-
-template <typename Type>
-class is_incomplete_test_impl;
-
-template <typename... Types>
-class is_incomplete_test_impl<std::tuple<Types...>>
-{
-    template <typename Type>
-    void impl()
-    {
-        static_assert(ref::is_incomplete_v<Type>, "");
-    }
-
-public:
-    void operator()()
-    {
-        (impl<Types>(), ...);
-    }
-};
-
 class CompleteType {};
 class IncompleteType;
 
 void is_complete_test()
 {
-    is_complete_test_impl<supported_types> {} ();
-    is_complete_test_impl<std::tuple<void>> {} ();
-    is_complete_test_impl<std::tuple<CompleteType>> {} ();
-//    is_complete_test_impl<std::tuple<IncompleteType>> {} (); // fails -> Ok
-    is_incomplete_test_impl<std::tuple<IncompleteType>> {} ();
+    assertion_trigger<ref::is_complete, supported_types> {}();
+    assertion_trigger<ref::is_complete, std::tuple<CompleteType>> {}();
+    assertion_trigger<ref::is_complete, std::tuple<IncompleteType>, true> {}();
 }
 
-template <typename Type, bool tt_negate = false>
-class has_value_test_impl;
-
-template <typename... Types, bool tt_negate>
-class has_value_test_impl<std::tuple<Types...>, tt_negate>
-{
-    template <template <typename> typename Trait, typename Type>
-    static constexpr bool check()
-    {
-        return (tt_negate ? !(Trait<Type>::value) : (Trait<Type>::value));
-    }
-
-    template <typename Type>
-    void impl()
-    {
-        static_assert(check<ref::has_value, Type>(), "");
-    }
-
-public:
-    void operator()()
-    {
-        (impl<Types>(), ...);
-    }
-};
-
+class NoValueType {};
 class HasValueType
 {
 public:
-    static constexpr bool value = true;
-};
-
-class NoValueType
-{
+static constexpr bool value = true;
 };
 
 void has_value_test()
 {
-    has_value_test_impl<supported_types, true> {} ();
-    has_value_test_impl<std::tuple<HasValueType>> {} ();
-    has_value_test_impl<std::tuple<NoValueType>, true> {} ();
+    assertion_trigger<ref::has_value, supported_types, true> {}();
+    assertion_trigger<ref::has_value, std::tuple<NoValueType>, true> {}();
+    assertion_trigger<ref::has_value, std::tuple<HasValueType>> {}();
 }
 
 void is_named()
 {
-    static_assert(ref::is_named_v<void>, "");
+    assertion_trigger<ref::is_named, supported_types> {}();
 }
 

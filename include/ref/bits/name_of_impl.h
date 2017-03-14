@@ -8,10 +8,10 @@
 #ifndef NAME_OF_IMPL_H_
 #define NAME_OF_IMPL_H_ 1
 
-namespace ref {
+#include "ref/bits/fwd.h"
+#include "ref/bits/preprocessor.h"
 
-template <typename Type>
-struct name_of;
+namespace ref {
 
 template <>
 struct name_of<void>

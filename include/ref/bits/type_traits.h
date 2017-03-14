@@ -12,6 +12,16 @@
 
 namespace ref {
 
+/// http://stackoverflow.com/questions/13842468/comma-in-c-c-macro
+template <typename Type>
+struct argument_type;
+
+template <typename Void, typename Type>
+struct argument_type<Void(Type)>
+{
+    using type = Type;
+};
+
 /// help trait
 template <std::size_t tt_value>
 using size_constant = std::integral_constant<std::size_t, tt_value>;
@@ -52,17 +62,6 @@ struct is_complete : public is_complete_impl<Type, std::is_fundamental<Type>::va
 
 template <typename Type>
 constexpr bool is_complete_v = is_complete<Type>::value;
-
-///
-/// detect incompete type
-///
-template <typename Type>
-struct is_incomplete : public std::bool_constant<!(is_complete_v<Type>)>
-{
-};
-
-template <typename Type>
-constexpr bool is_incomplete_v = is_incomplete<Type>::value;
 
 ///
 /// detect symbot value in type (impl)

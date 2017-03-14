@@ -11,30 +11,56 @@
 #include <tuple>
 
 using supported_types = std::tuple<
-        void,
-//        decltype(nullptr),
-        bool,
-        signed char,
-        unsigned char,
-        char,
-        wchar_t,
-        char16_t,
-        char32_t,
-        short int,
-        unsigned short int,
-        int,
-        unsigned int,
-        long int,
-        unsigned long int,
-        long long int,
-        unsigned long long int,
-        float,
-        double,
-        long double>;
+void,
+decltype(nullptr),
+bool,
+signed char,
+unsigned char,
+char,
+wchar_t,
+char16_t,
+char32_t,
+short int,
+unsigned short int,
+int,
+unsigned int,
+long int,
+unsigned long int,
+long long int,
+unsigned long long int,
+float,
+double,
+long double>;
+
+template <template <typename > class Trait, typename Type, bool tt_negate = false>
+class assertion_trigger;
+
+template <template <typename > class Trait, typename ... Types, bool tt_negate>
+class assertion_trigger<Trait, std::tuple<Types...>, tt_negate>
+{
+    template <typename Type>
+    static constexpr bool check()
+    {
+        return (tt_negate ? !(Trait<Type>::value) : (Trait<Type>::value));
+    }
+
+    template <typename Type>
+    void impl()
+    {
+        static_assert(check<Type>(), "");
+    }
+
+    void eat();
+
+public:
+    void operator()()
+    {
+        (impl<Types>(), ...);
+    }
+};
 
 void is_complete_test();
 void has_value_test();
 void is_named();
-
 
 #endif /* ASSERTION_TEST_H_ */

@@ -8,22 +8,27 @@
 #ifndef NAME_OF_H_
 #define NAME_OF_H_ 1
 
-#include "ref/bits/fwd.h"
 #include "ref/bits/type_traits.h"
+#include "ref/bits/name_of_impl.h"
 
 namespace ref {
 
 namespace {
 
-template <typename Type>
-struct is_named_impl : public std::bool_constant<ref::is_complete_v<Type>>
+template <typename Incomplete, bool tt_is_complete = false>
+struct is_named_impl : public std::false_type
+{
+};
+
+template <typename NameOf>
+struct is_named_impl<NameOf, true> : public std::bool_constant<(ref::has_value_v<NameOf>)>
 {
 };
 
 }  // namespace anonym
 
 template <typename Type>
-struct is_named : public is_named_impl<ref::name_of<Type>>
+struct is_named : public is_named_impl<ref::name_of<Type>, ref::is_complete_v<ref::name_of<Type>>>
 {
 };
 

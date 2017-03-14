@@ -32,10 +32,10 @@ public:
     }
 };
 
-ACF_REF_NAME(BasicBaseClass);
+REGISTER_REF_NAME_OF(BasicBaseClass);
 
-ACF_REF_INDEX(BasicBaseClass, 0);
-ACF_REF_MEM_NAME(BasicBaseClass, 0, bool_value);
+REGISTER_REF_MEM_INDEX(BasicBaseClass, 0);
+REGISTER_REF_MEM_NAME_OF(BasicBaseClass, 0, bool_value);
 
 namespace ref
 {
