@@ -1,4 +1,18 @@
 language: cpp
-compiler:
-  - clang
-  - gcc
+
+addons:
+  apt:
+    packages:
+      - g++-6
+  coverity_scan:
+    project:
+      name: "Red-F0x/acf-inc-ref"
+      description: "Build submitted via Travis CI"
+    build_command: mkdir build && cd build && cmake ../
+
+matrix:
+  include:
+    - os: linux
+      sudo: false
+      env: GCC_VER="6"
+      compiler: gcc
