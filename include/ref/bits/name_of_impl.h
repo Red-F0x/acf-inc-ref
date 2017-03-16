@@ -11,16 +11,17 @@
 #include "ref/bits/fwd.h"
 #include "ref/bits/preprocessor.h"
 
+REGISTER_REF_NAME_OF(void);
 namespace ref {
 
-template <>
-struct name_of<void>
-{
-    static constexpr char value[] { "void" };
-    using type = decltype(value);
-};
-
-constexpr char name_of<void>::value[];
+//template <>
+//struct name_of<void>
+//{
+//    static constexpr char value[] { "void" };
+//    using value_type = decltype(value);
+//};
+//
+//constexpr char name_of<void>::value[];
 
 template <>
 struct name_of<decltype(nullptr)>

@@ -68,6 +68,7 @@ constexpr bool is_complete_v = is_complete<Type>::value;
 ///
 namespace {
 
+/*
 template <typename Type>
 class has_value_impl
 {
@@ -78,6 +79,16 @@ class has_value_impl
     static std::false_type test(...);
 public:
     using type = decltype(test<Type>(0));
+};*/
+
+template <typename Type, typename = void>
+struct has_value_impl : public std::false_type
+{
+};
+
+template <typename Type>
+struct has_value_impl<Type, std::void_t<decltype(Type::value)>> : public std::true_type
+{
 };
 
 }  // namespace anonym
@@ -86,12 +97,34 @@ public:
 /// detect symbot value in type
 ///
 template <typename Type>
-struct has_value :public has_value_impl<Type>::type
+struct has_value :public has_value_impl<Type>//::type
 {
 };
 
 template <typename Type>
 constexpr bool has_value_v = has_value<Type>::value;
+
+namespace {
+
+template <typename Type, typename = void>
+struct has_value_type_impl : public std::false_type
+{
+};
+
+template <typename Type>
+struct has_value_type_impl<Type, std::void_t<typename Type::value_type>> : public std::true_type
+{
+};
+
+}  // namespace anonym
+
+template <typename Type>
+struct has_value_type : public has_value_type_impl<Type>
+{
+};
+
+template <typename Type>
+constexpr bool has_value_type_v = has_value_type<Type>::value;
 
 }  // namespace ref
 

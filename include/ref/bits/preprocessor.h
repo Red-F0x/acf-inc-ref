@@ -24,7 +24,7 @@ template <>                                                         \
 struct name_of<argument_type<void(Type)>::type>                     \
 {                                                                   \
     static constexpr char value[] = { Name };                       \
-    using type = decltype(value);                                   \
+    using value_type = decltype(value);                             \
 };                                                                  \
                                                                     \
 constexpr char name_of<argument_type<void(Type)>::type>::value[];   \
