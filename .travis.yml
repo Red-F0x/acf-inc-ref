@@ -3,7 +3,7 @@ language: cpp
 addons:
   apt:
     packages:
-      - g++-6
+      - g++-6.3.1
   coverity_scan:
     project:
       name: "Red-F0x/acf-inc-ref"
@@ -14,5 +14,5 @@ matrix:
   include:
     - os: linux
       sudo: false
-      env: GCC_VER="6"
+      env: GCC_VER="6.3.1"
       compiler: gcc
