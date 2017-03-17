@@ -9,8 +9,8 @@
 #define BEAN_TRAITS_H_
 
 #include <functional>
+#include <limits>
 
-#include "ref/bits/preprocessor.h"
 #include "ref/bits/name_of.h"
 
 namespace ref
@@ -85,7 +85,7 @@ constexpr std::size_t size_v = ref::size<Type>::value;
 
 template <typename Type>
 struct is_bean :
-                 public std::bool_constant<((ref::is_supported_v<Type>) && (ref::size_v<Type> > 0))>
+                 public std::bool_constant<(ref::is_named_v<Type>/*(ref::is_supported_v<Type>) && (ref::size_v<Type> > 0)*/)>
 {
 };
 
@@ -248,7 +248,7 @@ public:
     {
         return index_type::value;
     }
-    constexpr auto name() const
+    constexpr auto name() -> decltype(name_of_type::value) const
     {
         return name_of_type::value;
     }

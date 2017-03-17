@@ -20,9 +20,6 @@
 
 namespace ref {
 
-template <typename Type>
-struct is_incomplete;
-
 ///
 /// The Type is depended from Dependency if:
 /// - the Type has member from type Dependency* (pointer)

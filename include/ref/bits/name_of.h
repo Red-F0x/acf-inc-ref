@@ -22,8 +22,8 @@ struct is_named_impl : public std::false_type
 
 template <typename NameOf>
 struct is_named_impl<NameOf, true> : public std::bool_constant<(
-        /*ref::has_value_v<NameOf> &&*/
-        ref::has_value_type_v<NameOf>)>
+        ref::has_value_v<NameOf>/* &&
+        ref::has_value_type_v<NameOf>*/)>
 {
 };
 
@@ -46,7 +46,7 @@ struct name_size_impl : public ref::size_constant<0>
 
 template <typename Type>
 struct name_size_impl<Type, true> :
-    public ref::size_constant<((std::extent<std::remove_reference_t<typename Type::type>>::value) - 1)>
+    public ref::size_constant<((std::extent<std::remove_reference_t<typename Type::value_type>>::value) - 1)>
 {
 };
 
@@ -73,7 +73,7 @@ constexpr bool is_name_empty_v = ref::is_name_empty<Type>::value;
 
 template <typename Type>
 struct is_supported :
-                      public std::bool_constant<!ref::is_name_empty_v<Type>>
+                      public std::bool_constant<!(ref::is_name_empty_v<Type>)>
 {
 };
 

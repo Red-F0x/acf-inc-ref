@@ -11,7 +11,7 @@
 ///
 
 #ifndef PREPROCESSOR_H_
-#define PREPROCESSOR_H_
+#define PREPROCESSOR_H_ 1
 
 ///
 /// \def ACF_REF_NAME(Type)
@@ -23,13 +23,22 @@ namespace ref {                                                     \
 template <>                                                         \
 struct name_of<argument_type<void(Type)>::type>                     \
 {                                                                   \
-    static constexpr char value[] = { Name };                       \
+    static constexpr char value[] { Name };                         \
     using value_type = decltype(value);                             \
 };                                                                  \
                                                                     \
 constexpr char name_of<argument_type<void(Type)>::type>::value[];   \
                                                                     \
 }
+
+//template <>
+//struct name_of<void>
+//{
+//    static constexpr char value[] { "void" };
+//    using value_type = decltype(value);
+//};
+//
+//constexpr char name_of<void>::value[];
 
 ///
 /// \def REGISTER_REF_NAME_OF(Type)

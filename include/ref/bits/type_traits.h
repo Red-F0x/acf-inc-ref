@@ -12,14 +12,21 @@
 
 namespace ref {
 
-/// http://stackoverflow.com/questions/13842468/comma-in-c-c-macro
 template <typename Type>
-struct argument_type;
-
-template <typename Void, typename Type>
-struct argument_type<Void(Type)>
+struct type_t
 {
     using type = Type;
+};
+
+/// http://stackoverflow.com/questions/13842468/comma-in-c-c-macro
+template <typename Type, typename Ignore = void, typename = Ignore(Type)>
+struct argument_type : public ref::type_t <Type>
+{
+};
+
+template <typename Void>
+struct argument_type<Void()> : public ref::type_t<void>
+{
 };
 
 /// help trait
@@ -87,7 +94,7 @@ struct has_value_impl : public std::false_type
 };
 
 template <typename Type>
-struct has_value_impl<Type, std::void_t<decltype(Type::value)>> : public std::true_type
+struct has_value_impl<Type, std::void_t<decltype(&Type::value)>> : public std::true_type
 {
 };
 
