@@ -16,8 +16,46 @@
 namespace ref
 {
 
+///
+/// detect bean type
+///
 template <typename Type>
-struct is_bean;
+struct is_bean :
+                 public std::bool_constant<(
+                         ref::is_named<Type>::value &&
+                         std::is_class<Type>::value &&
+                         std::is_default_constructible<Type>::value &&
+                         std::is_destructible<Type>::value)>
+{
+};
+
+template <typename Type>
+constexpr bool is_bean_v = ref::is_bean<Type>::value;
+
+namespace {
+
+template <typename Type>
+struct bean_size_impl
+{
+    static_assert(is_bean<Type>::value, "given type is not a bean");
+
+    using type = ref::size_constant<(0)>;
+};
+
+}  // namespace anonymus
+
+template <typename Type>
+struct bean_size : public bean_size_impl<Type>::type
+{
+};
+
+template <typename Type>
+struct is_bean_empty : public std::bool_constant<(bean_size<Type>::value == 0)>
+{
+};
+
+template <typename Type>
+constexpr bool is_bean_empty_v = ref::is_bean_empty<Type>::value;
 
 template <typename Type, std::size_t tp_index>
 struct index_impl :
@@ -82,15 +120,6 @@ struct size :
 
 template <typename Type>
 constexpr std::size_t size_v = ref::size<Type>::value;
-
-template <typename Type>
-struct is_bean :
-                 public std::bool_constant<(ref::is_named_v<Type>/*(ref::is_supported_v<Type>) && (ref::size_v<Type> > 0)*/)>
-{
-};
-
-template <typename Type>
-constexpr bool is_bean_v = ref::is_bean<Type>::value;
 
 ///
 ///

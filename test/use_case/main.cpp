@@ -5,10 +5,10 @@
 //      Author: ho11owman
 //
 
-#include "Beans.h"
+#include "ref/bean_traits.h"
 #include "ref/bean_stream.h"
 
-
+#include "Beans.h"
 
 int main(int t_argc, char* t_argv[])
 {

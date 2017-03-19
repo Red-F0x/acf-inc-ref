@@ -253,7 +253,7 @@ has_value_test();
 
 std::cout << ref::name_of<void>::value << '\n';
 
-is_named();
+is_named_test();
 std::cout << "run test from \'" << t_argv[0] << "\' argc \'" << t_argc << '\'' << '\n';
 
 std::cout << "assertion test" << '\n';
@@ -438,6 +438,7 @@ class HasValueType
 {
 public:
 static constexpr bool value = true;
+using value_type = bool;
 };
 
 void has_value_test()
@@ -447,9 +448,28 @@ void has_value_test()
     assertion_trigger<ref::has_value, std::tuple<HasValueType>> {}();
 }
 
-void is_named()
+void has_value_type_test()
 {
-//    assertion_trigger<ref::is_named, supported_types> {}();
-    assertion_trigger<ref::is_named, std::tuple<void>> {}();
+    assertion_trigger<ref::has_value_type, supported_types, true> {}();
+    assertion_trigger<ref::has_value_type, std::tuple<NoValueType>, true> {}();
+    assertion_trigger<ref::has_value_type, std::tuple<HasValueType>> {}();
+}
+
+class NoNamedType {};
+
+void is_named_test()
+{
+    assertion_trigger<ref::is_named, supported_types> {}();
+    assertion_trigger<ref::is_named, std::tuple<NoNamedType>, true> {}();
+}
+
+void is_bean_test()
+{
+    assertion_trigger<ref::is_bean, supported_types, true> {}();
+}
+
+void bean_size_test()
+{
+//    static_assert(!(ref::bean_size<void>::value > 0), "");
 }
 

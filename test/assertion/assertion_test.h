@@ -61,6 +61,9 @@ public:
 
 void is_complete_test();
 void has_value_test();
-void is_named();
+void has_value_type_test();
+void is_named_test();
+void is_bean_test();
+void bean_size_test();
 
 #endif /* ASSERTION_TEST_H_ */

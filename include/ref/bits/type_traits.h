@@ -75,19 +75,6 @@ constexpr bool is_complete_v = is_complete<Type>::value;
 ///
 namespace {
 
-/*
-template <typename Type>
-class has_value_impl
-{
-    template <typename Target, typename = decltype(Target::value)>
-    static std::true_type test(int);
-
-    template <typename >
-    static std::false_type test(...);
-public:
-    using type = decltype(test<Type>(0));
-};*/
-
 template <typename Type, typename = void>
 struct has_value_impl : public std::false_type
 {
@@ -104,7 +91,7 @@ struct has_value_impl<Type, std::void_t<decltype(&Type::value)>> : public std::t
 /// detect symbot value in type
 ///
 template <typename Type>
-struct has_value :public has_value_impl<Type>//::type
+struct has_value :public has_value_impl<Type>
 {
 };
 

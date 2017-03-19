@@ -28,8 +28,10 @@ public:
     type& operator<<(const Bean& t_bean)
     {
         static_assert(ref::is_bean_v<Bean>, "");
-        static_assert(ref::is_complete_v<Bean>, "");
-//        std::cout << ref::name_of<Bean>::value << '\n';
+
+        std::cout << ref::name_of<Bean>::value << ' ' << '{' << '\n';
+        std::cout << '}' << '\n';
+
         return *this;
     }
 };

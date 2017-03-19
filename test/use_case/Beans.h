@@ -8,7 +8,9 @@
 #ifndef BEANS_H_
 #define BEANS_H_
 
-#include "ref/bean_traits.h"
+//#include "ref/bean_traits.h"
+#include "ref/bits/fwd.h"
+#include "ref/bits/preprocessor.h"
 
 class BasicBeanClass
 {

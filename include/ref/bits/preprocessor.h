@@ -14,6 +14,11 @@
 #define PREPROCESSOR_H_ 1
 
 ///
+/// \def EXPAND(...)
+/// expands variable arguments from macro
+#define EXPAND(...) __VA_ARGS__
+
+///
 /// \def ACF_REF_NAME(Type)
 /// specialize template class name for given \a Type
 ///
@@ -21,24 +26,15 @@
 namespace ref {                                                     \
                                                                     \
 template <>                                                         \
-struct name_of<argument_type<void(Type)>::type>                     \
+struct name_of<Type>                                                \
 {                                                                   \
     static constexpr char value[] { Name };                         \
     using value_type = decltype(value);                             \
 };                                                                  \
                                                                     \
-constexpr char name_of<argument_type<void(Type)>::type>::value[];   \
+constexpr char name_of<Type>::value[];                              \
                                                                     \
 }
-
-//template <>
-//struct name_of<void>
-//{
-//    static constexpr char value[] { "void" };
-//    using value_type = decltype(value);
-//};
-//
-//constexpr char name_of<void>::value[];
 
 ///
 /// \def REGISTER_REF_NAME_OF(Type)
@@ -65,6 +61,6 @@ struct index<Type, tt_index> :                                      \
 /// specialize template class name for given \a Type and \a tt_index \a tt_name
 ///
 #define REGISTER_REF_MEM_NAME_OF(Type, tt_index, tt_name)           \
-        REGISTER_REF_NAME_OF_AS((ref::index<Type, tt_index>), #tt_name)
+        REGISTER_REF_NAME_OF_AS(EXPAND(ref::index<Type, tt_index>), #tt_name)
 
 #endif /* PREPROCESSOR_H_ */
