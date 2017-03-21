@@ -9,6 +9,7 @@
 #include <experimental/string_view>
 #include <string>
 #include <sstream>
+#include <cassert>
 
 #include "assertion_test.h"
 #include "ref/bean_traits.h"
@@ -250,10 +251,10 @@ int main(int t_argc, char* t_argv[])
 {
 is_complete_test();
 has_value_test();
-
-std::cout << ref::name_of<void>::value << '\n';
-
+has_value_type_test();
 is_named_test();
+is_bean_test();
+
 std::cout << "run test from \'" << t_argv[0] << "\' argc \'" << t_argc << '\'' << '\n';
 
 std::cout << "assertion test" << '\n';
@@ -461,6 +462,12 @@ void is_named_test()
 {
     assertion_trigger<ref::is_named, supported_types> {}();
     assertion_trigger<ref::is_named, std::tuple<NoNamedType>, true> {}();
+}
+
+void is_name_of_test()
+{
+    static_assert(check_name<ref::name_of<void>>("void"), "");
+    assert(check_name<ref::name_of<void>>("void"));
 }
 
 void is_bean_test()

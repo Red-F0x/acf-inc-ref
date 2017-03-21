@@ -22,8 +22,10 @@ struct is_named_impl : public std::false_type
 
 template <typename NameOf>
 struct is_named_impl<NameOf, true> : public std::bool_constant<(
-        ref::has_value_v<NameOf> &&
-        ref::has_value_type_v<NameOf>)>
+        ref::has_value<NameOf>::value &&
+        ref::has_value_type<NameOf>::value &&
+        std::is_array<typename NameOf::value_type>::value &&
+        (std::extent<typename NameOf::value_type>::value > 0))>
 {
 };
 
