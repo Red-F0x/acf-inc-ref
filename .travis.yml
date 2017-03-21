@@ -11,6 +11,7 @@ matrix:
       addons:
         apt:
           packages:
+            - cmake
             - g++-6
       env: COMPILER=g++-6.3.1
 
