@@ -10,6 +10,9 @@ matrix:
     - compiler: gcc
       addons:
         apt:
+          sources:
+            # for cmake version 3.5.2
+            - jessie-backports
           packages:
             - cmake
             - g++-6
