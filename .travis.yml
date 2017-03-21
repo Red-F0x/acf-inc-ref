@@ -1,5 +1,6 @@
 # info found at: https://genbattle.bitbucket.io/blog/2016/01/17/c++-travis-ci/
 #                https://jonasw.de/blog/2015/07/22/develop/cplusplus14-on-travis-with-cmake/
+#                https://docs.travis-ci.com/user/installing-dependencies#Installing-Packages-with-the-APT-Addon
 # enable c++ support
 sudo: required
 language: cpp
