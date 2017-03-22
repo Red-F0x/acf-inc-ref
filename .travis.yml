@@ -16,6 +16,8 @@ addons:
     packages:
       # add g++-6 version
       - g++-6
+  coverity_scan:
+    build_command: mkdir build && cd build && cmake ../ && make
 
 matrix:
   include:
@@ -32,5 +34,4 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake ../
-  - make
+  - cmake ../ && make
