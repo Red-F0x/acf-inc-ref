@@ -1,6 +1,10 @@
-# info found at: https://genbattle.bitbucket.io/blog/2016/01/17/c++-travis-ci/
-#                https://jonasw.de/blog/2015/07/22/develop/cplusplus14-on-travis-with-cmake/
-#                https://docs.travis-ci.com/user/installing-dependencies#Installing-Packages-with-the-APT-Addon
+# info found at:
+# https://genbattle.bitbucket.io/blog/2016/01/17/c++-travis-ci/
+# https://jonasw.de/blog/2015/07/22/develop/cplusplus14-on-travis-with-cmake/
+# https://docs.travis-ci.com/user/installing-dependencies#Installing-Packages-with-the-APT-Addon
+#
+# Travis CI online validator: http://lint.travis-ci.org/
+#
 # enable c++ support
 sudo: required
 language: cpp
@@ -12,11 +16,13 @@ matrix:
       addons:
         apt:
           sources:
+            # g++-6 compiler
+            - ubuntu-toolchain-r-test
             # for cmake version 3.5.2
             - jessie-backports
           packages:
-            - cmake
             - g++-6
+            - cmake
       env: COMPILER=g++-6.3.1
 
 # build steps (using specific COMPILER)
