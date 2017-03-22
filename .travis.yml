@@ -17,6 +17,8 @@ addons:
       # add g++-6 version
       - g++-6
   coverity_scan:
+    project:
+      name: "CppRef/CppRef"
     build_command: mkdir build && cd build && cmake ../ && make
 
 matrix:
