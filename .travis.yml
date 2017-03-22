@@ -25,7 +25,7 @@ matrix:
   include:
     - os: linux
       sudo: required
-      env: GCC_VER="6.2.0"
+      env: GCC_VER="6"
       compiler: gcc
 
 # export CXX and CC
