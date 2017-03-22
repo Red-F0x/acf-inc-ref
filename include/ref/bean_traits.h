@@ -12,6 +12,7 @@
 #include <limits>
 
 #include "ref/bits/name_of.h"
+#include "ref/bits/index.h"
 
 namespace ref
 {
@@ -31,6 +32,13 @@ struct is_bean :
 
 template <typename Type>
 constexpr bool is_bean_v = ref::is_bean<Type>::value;
+
+
+
+
+
+
+
 
 namespace {
 
@@ -56,22 +64,6 @@ struct is_bean_empty : public std::bool_constant<(bean_size<Type>::value == 0)>
 
 template <typename Type>
 constexpr bool is_bean_empty_v = ref::is_bean_empty<Type>::value;
-
-template <typename Type, std::size_t tp_index>
-struct index_impl :
-                    public ref::size_constant<tp_index>
-{
-    using bean_type = Type;
-};
-
-template <typename Type, std::size_t tp_index>
-struct index :
-               public ref::index_impl<Type, std::numeric_limits<std::size_t>::max()>
-{
-};
-
-template <typename Type, std::size_t tp_index>
-constexpr std::size_t index_v = ref::index<Type, tp_index>::value;
 
 namespace
 {

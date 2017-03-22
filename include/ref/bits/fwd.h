@@ -13,6 +13,9 @@ namespace ref {
 template <typename Type>
 struct name_of;
 
+template <typename Type, std::size_t tt_index>
+struct index;
+
 }  // namespace ref
 
 

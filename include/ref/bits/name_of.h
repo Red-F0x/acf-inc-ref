@@ -15,6 +15,7 @@ namespace ref {
 
 namespace {
 
+/// \todo this and is_indexed constrain do the same thing
 template <typename Incomplete, bool tt_is_complete = false>
 struct is_named_impl : public std::false_type
 {
