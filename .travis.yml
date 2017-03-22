@@ -36,4 +36,4 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake ../ && make
+  - cmake -DCMAKE_CXX_COMPILER=g++-$GCC_VER ../ && make
