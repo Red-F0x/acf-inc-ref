@@ -11,18 +11,18 @@ language: cpp
 addons:
   apt:
     sources:
-	  # enable latest gcc/++ version
-	  - ubuntu-toolchain-r-test
-	packages:
-	  # add g++-6 version
-	  - g++-6
+      # enable latest gcc/++ version
+      - ubuntu-toolchain-r-test
+    packages:
+      # add g++-6 version
+      - g++-6
 
 matrix:
   include:
     - os: linux
-	  sudo: false
-	  env: GCC_VER="6.2.0"
-	  compiler: gcc
+      sudo: false
+      env: GCC_VER="6.2.0"
+      compiler: gcc
 
 # export CXX and CC
 before_install:
