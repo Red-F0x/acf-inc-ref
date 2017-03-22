@@ -86,7 +86,7 @@ constexpr Stream right_manip(Stream&& t_stream, Char&& t_fill, StreamSize t_widt
 template <typename Stream, typename Type>
 constexpr void write_to_stream(Stream&& t_stream, Type&& t_value)
 {
-    t_ss << t_value;
+    t_stream << t_value;
 }
 
 template <typename Stream, typename ... Types>
@@ -94,7 +94,7 @@ constexpr void log(Stream&& t_stream, Types&&... t_value)
 {
     std::stringstream t_ss { };
     //((t_ss << t_value), ...);
-    (write_to_stream(std::forward<Stream>(t_stream), std::forward<Types>(t_value)), ...);
+    (write_to_stream(std::forward<Stream>(t_ss), std::forward<Types>(t_value)), ...);
     t_stream << t_ss.str();
 }
 
