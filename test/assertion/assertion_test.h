@@ -64,6 +64,7 @@ constexpr bool cstr_eq(const char* t_one, const char* t_two)
   return (*t_one && *t_two) ? (*t_one == *t_two && cstr_eq(t_one + 1, t_two + 1)) : (!*t_one && !*t_two);
 }
 
+template <typename NameOf>
 constexpr bool check_name(const char* t_cstr)
 {
     return cstr_eq(NameOf::value, t_cstr);
