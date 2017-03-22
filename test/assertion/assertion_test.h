@@ -59,32 +59,14 @@ public:
     }
 };
 
-namespace {
-
-template <typename Type>
-constexpr bool is_eq(Type&& t_value1, Type&& t_value2)
+constexpr bool cstr_eq(const char* t_one, const char* t_two)
 {
-    return (t_value1 == t_value2);
+  return (*t_one && *t_two) ? (*t_one == *t_two && cstr_eq(t_one + 1, t_two + 1)) : (!*t_one && !*t_two);
 }
 
-template <std::size_t tt_index, typename Char, std::size_t tt_size, typename Type = const Char&[tt_size]>
-constexpr bool cstr_eq_impl(Type t_cstr_1, Type t_cstr_2)
+constexpr bool check_name(const char* t_cstr)
 {
-    return is_eq(t_cstr_1[0], t_cstr_2[0]);
-}
-
-}  // namespace anonym
-
-template <typename Type>
-constexpr bool cstr_eq(Type&& t_cstr1, Type&& t_cstr2)
-{
-    return cstr_eq_impl<0>(std::forward<Type>(t_cstr1), std::forward<Type>(t_cstr2));
-}
-
-template <typename NameOf, typename Type>
-constexpr bool check_name(Type&& t_cstr)
-{
-    return cstr_eq(NameOf::value, std::forward<Type>(t_cstr));
+    return cstr_eq(NameOf::value, t_cstr);
 }
 
 void is_complete_test();
