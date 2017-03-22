@@ -12,23 +12,6 @@
 
 namespace ref {
 
-template <typename Type>
-struct type_t
-{
-    using type = Type;
-};
-
-/// http://stackoverflow.com/questions/13842468/comma-in-c-c-macro
-template <typename Type, typename Ignore = void, typename = Ignore(Type)>
-struct argument_type : public ref::type_t <Type>
-{
-};
-
-template <typename Void>
-struct argument_type<Void()> : public ref::type_t<void>
-{
-};
-
 /// help trait
 template <std::size_t tt_value>
 using size_constant = std::integral_constant<std::size_t, tt_value>;
