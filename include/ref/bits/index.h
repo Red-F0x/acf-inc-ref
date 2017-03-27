@@ -49,8 +49,8 @@ struct is_indexed_impl : public std::false_type
 template <typename Index>
 struct is_indexed_impl<Index, true> : public std::bool_constant<(
         ref::has_value<Index>::value &&
-        ref::has_value_type<Index>::value/* &&
-        ref::has_bean_type<Index>::value &&
+        ref::has_value_type<Index>::value &&
+        ref::has_bean_type<Index>::value/* &&
         ref::is_bean<typename Index::bean_type>::value*/)>
 {
 };
@@ -75,15 +75,6 @@ struct index_impl :
 };
 
 } // namespace details
-
-//template <typename Type, std::size_t tp_index>
-//struct index :
-//               public ref::index_impl<Type, std::numeric_limits<std::size_t>::max()>
-//{
-//};
-
-//template <typename Type, std::size_t tp_index>
-//constexpr std::size_t index_v = ref::index<Type, tp_index>::value;
 
 }  // namespace ref
 

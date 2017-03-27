@@ -12,6 +12,7 @@
 
 namespace ref {
 
+/// unused
 template <typename Type>
 struct type_t
 {
@@ -29,7 +30,9 @@ struct argument_type<Void()> : public ref::type_t<void>
 {
 };
 
-/// help trait
+///
+/// help trait for size_constant
+///
 template <std::size_t tt_value>
 using size_constant = std::integral_constant<std::size_t, tt_value>;
 
