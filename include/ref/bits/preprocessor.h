@@ -52,7 +52,7 @@ namespace ref {                                                     \
                                                                     \
 template <>                                                         \
 struct index<Type, tt_index> :                                      \
-    public ref::index_impl<Type, tt_index> {};                      \
+    public ref::details::index_impl<Type, tt_index> {};             \
                                                                     \
 }
 

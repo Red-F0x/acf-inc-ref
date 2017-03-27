@@ -65,32 +65,32 @@ struct is_bean_empty : public std::bool_constant<(bean_size<Type>::value == 0)>
 template <typename Type>
 constexpr bool is_bean_empty_v = ref::is_bean_empty<Type>::value;
 
-namespace
-{
+//namespace
+//{
 
-template <typename Type, std::size_t tt_index>
-constexpr bool is_indexed_impl_0()
-{
-    /// \todo add constrains
-    return ref::index_v<Type, tt_index> != std::numeric_limits<std::size_t>::max();
-}
+//template <typename Type, std::size_t tt_index>
+//constexpr bool is_indexed_impl_0()
+//{
+//    /// \todo add constrains
+//    return ref::index_v<Type, tt_index> != std::numeric_limits<std::size_t>::max();
+//}
 
-template <typename Type, std::size_t tt_index>
-constexpr bool is_indexed_impl()
-{
-    return is_indexed_impl_0<Type, tt_index>();
-}
+//template <typename Type, std::size_t tt_index>
+//constexpr bool is_indexed_impl()
+//{
+//    return is_indexed_impl_0<Type, tt_index>();
+//}
 
-} // anonym
+//} // anonym
 
-template <typename Type, std::size_t tt_index = 0>
-struct is_indexed :
-                    public std::bool_constant<is_indexed_impl<Type, tt_index>()>
-{
-};
+//template <typename Type, std::size_t tt_index = 0>
+//struct is_indexed :
+//                    public std::bool_constant<is_indexed_impl<Type, tt_index>()>
+//{
+//};
 
-template <typename Type, std::size_t tp_index = 0>
-constexpr bool is_indexed_v = ref::is_indexed<Type, tp_index>::value;
+//template <typename Type, std::size_t tp_index = 0>
+//constexpr bool is_indexed_v = ref::is_indexed<Type, tp_index>::value;
 
 template <typename Type, std::size_t tp_index>
 constexpr auto size_impl() -> std::enable_if_t<!(ref::is_indexed_v<Type, tp_index>), std::size_t>

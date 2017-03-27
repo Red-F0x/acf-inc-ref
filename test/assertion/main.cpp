@@ -410,12 +410,12 @@ ACF_REF_ASSERTION_TEST_NOT_BEAN(some_type);
 
 std::cout << "- test \'sdk::is_bean_v<?>\' - OK" << '\n';
 
-std::cout << ref::index_v<void, 0> << '\n';
-std::cout << ref::index_v<some_type, 0> << '\n';
+//std::cout << ref::index_v<void, 0> << '\n';
+//std::cout << ref::index_v<some_type, 0> << '\n';
 //std::cout << ref::index_v<BasicBaseClass, 0> << '\n';
 
-std::cout << ref::is_indexed_v<void> << '\n';
-std::cout << ref::is_indexed_v<some_type> << '\n';
+//std::cout << ref::is_indexed_v<void> << '\n';
+//std::cout << ref::is_indexed_v<some_type> << '\n';
 //std::cout << ref::is_indexed_v<BasicBaseClass> << '\n';
 
 //using id = ref::index<BasicBaseClass, 0>;

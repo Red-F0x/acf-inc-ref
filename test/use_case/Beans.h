@@ -44,10 +44,9 @@ namespace ref
 
 template <>
 struct read_asseccor<ref::index<BasicBeanClass, 0>> :
-                                                           public details::read_asseccor_impl<
-                                                                   ref::index<BasicBeanClass, 0>,
-                                                                   bool (BasicBeanClass::*)() const,
-                                                                   (bool (BasicBeanClass::*)() const) &BasicBeanClass::bool_value>
+                                                      public details::read_asseccor_impl<ref::index<BasicBeanClass, 0>,
+                                                              bool (BasicBeanClass::*)() const,
+                                                              (bool (BasicBeanClass::*)() const) &BasicBeanClass::bool_value>
 {
 };
 
@@ -58,10 +57,10 @@ namespace ref
 
 template <>
 struct write_asseccor<ref::index<BasicBeanClass, 0>> :
-                                                            public details::write_asseccor_impl<
-                                                                    ref::index<BasicBeanClass, 0>,
-                                                                    void (BasicBeanClass::*)(bool),
-                                                                    (void (BasicBeanClass::*)(bool)) &BasicBeanClass::bool_value>
+                                                       public details::write_asseccor_impl<
+                                                               ref::index<BasicBeanClass, 0>,
+                                                               void (BasicBeanClass::*)(bool),
+                                                               (void (BasicBeanClass::*)(bool)) &BasicBeanClass::bool_value>
 {
 };
 
