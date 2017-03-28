@@ -9,6 +9,53 @@
 #define ASSERTION_TEST_H_ 1
 
 #include <tuple>
+#include "ref/bits/type_traits.h"
+
+/// @todo maby exctra assertion test' list???
+constexpr bool cstr_eq(const char* t_one, const char* t_two)
+{
+  return (*t_one && *t_two) ? (*t_one == *t_two && cstr_eq(t_one + 1, t_two + 1)) : (!*t_one && !*t_two);
+}
+
+template <template <typename > class Trait, typename Type, bool tt_negate = false>
+class assertion_trigger;
+
+template <template <typename > class Trait, typename ... Types, bool tt_negate>
+class assertion_trigger<Trait, std::tuple<Types...>, tt_negate>
+{
+    template <typename Type>
+    struct check
+    {
+        static constexpr bool value = (tt_negate ? !(Trait<Type>::value) : (Trait<Type>::value));
+    };
+
+//    template <typename Type, typename TT = Trait<Type>, typename ValueType = typename TT::value_type>
+//    constexpr auto check_eq(ValueType&& t_value)
+//    {
+//        return struct {
+//            static constexpr bool value = cstr_eq(TT::value, std::forward<ValueType>(t_value));
+//        } ();
+//    };
+
+public:
+    constexpr void operator()() const
+    {
+        static_assert(ref::conjunction<check<Types>...>::value, "");
+    }
+
+    template <typename... Values>
+    constexpr void operator()(Values&&... t_values) const
+    {
+//        static_assert(ref::conjunction<check_eq<Types>(t_values)...>::value, "");
+//        static_assert(ref::conjunction<check<Types>...>::value, "");
+    }
+
+//    template <typename Type, typename TT = Trait<Type>>
+//    constexpr void operator()(typename TT::value_type&& t_value) const
+//    {
+//        static_assert(cstr_eq(Type::value, t_value), "");
+//    }
+};
 
 using supported_types = std::tuple<
 void,
@@ -31,38 +78,6 @@ unsigned long long int,
 float,
 double,
 long double>;
-
-template <template <typename > class Trait, typename Type, bool tt_negate = false>
-class assertion_trigger;
-
-template <template <typename > class Trait, typename ... Types, bool tt_negate>
-class assertion_trigger<Trait, std::tuple<Types...>, tt_negate>
-{
-    template <typename Type>
-    static constexpr bool check()
-    {
-        return (tt_negate ? !(Trait<Type>::value) : (Trait<Type>::value));
-    }
-
-    template <typename Type>
-    void impl()
-    {
-        static_assert(check<Type>(), "");
-    }
-
-    void eat();
-
-public:
-    void operator()()
-    {
-        (impl<Types>(), ...);
-    }
-};
-
-constexpr bool cstr_eq(const char* t_one, const char* t_two)
-{
-  return (*t_one && *t_two) ? (*t_one == *t_two && cstr_eq(t_one + 1, t_two + 1)) : (!*t_one && !*t_two);
-}
 
 template <typename NameOf>
 constexpr bool check_name(const char* t_cstr)

@@ -260,7 +260,9 @@ is_complete_test();
 has_value_test();
 has_value_type_test();
 is_named_test();
+is_name_of_test();
 is_bean_test();
+bean_size_test();
 
 std::cout << "run test from \'" << t_argv[0] << "\' argc \'" << t_argc << '\'' << '\n';
 
@@ -473,8 +475,30 @@ void is_named_test()
 
 void is_name_of_test()
 {
-    static_assert(check_name<ref::name_of<void>>("void"), "");
-    assert(check_name<ref::name_of<void>>("void"));
+    assertion_trigger<ref::name_of, supported_types> {} ("void", "nullptr", "bool", "signed char");
+//    static_assert(check_name<ref::name_of<void>>("void"), "");
+//    static_assert(check_name<ref::name_of<decltype(nullptr)>>("nullptr"), "");
+//    static_assert(check_name<ref::name_of<bool>>("bool"), "");
+//    static_assert(check_name<ref::name_of<signed char>>("signed char"), "");
+    /*
+    signed char,
+    unsigned char,
+    char,
+    wchar_t,
+    char16_t,
+    char32_t,
+    short int,
+    unsigned short int,
+    int,
+    unsigned int,
+    long int,
+    unsigned long int,
+    long long int,
+    unsigned long long int,
+    float,
+    double,
+    long double*/
+//    assert(check_name<ref::name_of<void>>("void"));
 }
 
 void is_bean_test()

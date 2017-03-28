@@ -36,6 +36,34 @@ struct argument_type<Void()> : public ref::type_t<void>
 template <std::size_t tt_value>
 using size_constant = std::integral_constant<std::size_t, tt_value>;
 
+///
+/// __cplusplus versions
+/// c++98 gcc - 199711L
+/// c++11 gcc - 201103L
+/// c++14 gcc - 201402L
+/// c++17 gcc - 201500L
+///
+#if __cplusplus > 201402L // gcc c++17
+
+template <typename... Type>
+using void_t = std::void_t<Type...>;
+
+template <typename... Types>
+using conjunction = std::conjunction<Types...>;
+
+#elif __cplusplus > 199711L // c++11, c++14
+
+template <typename... Type>
+using void_t = void;
+
+///
+/// not implemented
+///
+template <typename... Types>
+using conjunction;
+
+#endif
+
 namespace {
 
 ///
